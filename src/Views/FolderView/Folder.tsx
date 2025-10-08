@@ -7,9 +7,7 @@ namespace Views.FolderView
             for (const parentFolderElement of folderView.querySelectorAll(".folder"))
                 if (parentFolderElement["folder"] == folder.parent)
                 {
-                    const subfoldersElement = parentFolderElement.querySelector(".subfolders");
-                    subfoldersElement.append(folderElement(folder));
-                    parentFolderElement.classList.toggle("has-subfolders", true);
+                    insertFolderIntoParent(parentFolderElement as HTMLElement, folder);
                     return;
                 }
         }
@@ -18,6 +16,25 @@ namespace Views.FolderView
             const foldersElement = folderView.querySelector(".folders");
             foldersElement.append(folderElement(folder));
         }
+    }
+
+    function insertFolderIntoParent(parentFolderElement: HTMLElement, folder: Data.Folder)
+    {
+        const subfoldersElement = parentFolderElement.querySelector(".subfolders");
+        subfoldersElement.append(folderElement(folder));
+        parentFolderElement.classList.toggle("has-subfolders", true);
+
+        let parent = parentFolderElement;
+        do
+        {
+            if (parent.classList.contains("folder"))
+            {
+                const fileCountElement = parent.querySelector(".file-count") as HTMLSpanElement;
+                const currentCount = fileCountElement.textContent ? parseInt(fileCountElement.textContent) : 0;
+                const newCount = currentCount + folder.files.length;
+                fileCountElement.title = fileCountElement.textContent = newCount.toFixed(0);
+            }
+        } while (parent = parent.parentElement);
     }
 
     function folderElement(folder: Data.Folder)
@@ -87,8 +104,8 @@ namespace Views.FolderView
             let parent = folderElement.parentElement;
             do
             {
-                if (folderElement.classList.contains("folder"))
-                    folderElement.classList.toggle("expanded", true);
+                if (parent.classList.contains("folder"))
+                    parent.classList.toggle("expanded", true);
             } while (parent = parent.parentElement);
         }
     }
