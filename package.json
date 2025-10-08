@@ -1,0 +1,16 @@
+{
+  "name": "iconi.web",
+  "version": "1.8.9",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Juvinhel",
+  "license": "ISC",
+  "dependencies": {
+    "@peach/helper": "file:../Peach/Helper",
+    "@peach/ui": "file:../Peach/UI",
+    "@peach/ui.components": "file:../Peach/UI.Components"
+  }
+}

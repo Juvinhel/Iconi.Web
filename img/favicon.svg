@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Flat"
+   viewBox="0 0 64 64"
+   version="1.1"
+   sodipodi:docname="favicon.svg"
+   inkscape:export-filename="favicon.png"
+   inkscape:export-xdpi="768"
+   inkscape:export-ydpi="768"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs11" />
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="10.5"
+     inkscape:cx="32"
+     inkscape:cy="31.952381"
+     inkscape:window-width="1860"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Flat" />
+  <path
+     d="m10 60c4.482 1.508 10.61 3 22 3s17.518-1.492 22-3a137.051 137.051 0 0 1 -5-36.681v-1.319h-34v1.319a137.051 137.051 0 0 1 -5 36.681z"
+     fill="#5a5aac"
+     id="path1" />
+  <path
+     d="m13 60a3.99 3.99 0 0 0 -.307.83c4.248 1.181 10.034 2.17 19.307 2.17 11.39 0 17.518-1.492 22-3a137.053 137.053 0 0 1 -5-36.682v-1.318h-31v1.318a137.053 137.053 0 0 1 -5 36.682z"
+     fill="#4e4e8a"
+     id="path2" />
+  <path
+     d="m49 22.949a140.811 140.811 0 0 0 -17-.949 140.811 140.811 0 0 0 -17 .949v.369q0 3.858-.217 7.706a140.183 140.183 0 0 0 17.217.976 140.183 140.183 0 0 0 17.217-.976q-.217-3.846-.217-7.706z"
+     fill="#d07ef2"
+     id="path3" />
+  <path
+     d="m18 23.318q0 4.026-.236 8.039c4.205.409 9.062.643 14.236.643a140.183 140.183 0 0 0 17.217-.976q-.217-3.846-.217-7.706v-.369a140.811 140.811 0 0 0 -17-.949c-5.077 0-9.849.225-14 .621z"
+     fill="#c45eef"
+     id="path4" />
+  <ellipse
+     cx="32"
+     cy="22"
+     fill="#4e4e8a"
+     rx="29"
+     ry="5"
+     id="ellipse4" />
+  <ellipse
+     cx="32"
+     cy="22"
+     fill="#b4b4f0"
+     rx="17"
+     ry="2"
+     id="ellipse5" />
+  <path
+     d="m42.265 1.052c-1.6-.428-3.593 1.819-4.451 5.02a51.693 51.693 0 0 0 -1.309 7 10.019 10.019 0 0 0 -9.01 0 51.693 51.693 0 0 0 -1.309-7c-.858-3.2-2.85-5.448-4.451-5.02s-2.2 3.372-1.344 6.572a51.469 51.469 0 0 0 3.318 8.783 10.014 10.014 0 0 0 -1.576 7.222c2.782.234 6.188.371 9.867.371s7.085-.137 9.867-.371a10.014 10.014 0 0 0 -1.576-7.222 51.469 51.469 0 0 0 3.318-8.783c.858-3.2.256-6.143-1.344-6.572z"
+     fill="#efefef"
+     id="path5" />
+  <path
+     d="m37 21.75a.75.75 0 0 1 -.75-.75v-1a.75.75 0 0 1 1.5 0v1a.75.75 0 0 1 -.75.75z"
+     fill="#4e4e8a"
+     id="path6" />
+  <path
+     d="m27 21.75a.75.75 0 0 1 -.75-.75v-1a.75.75 0 0 1 1.5 0v1a.75.75 0 0 1 -.75.75z"
+     fill="#4e4e8a"
+     id="path7" />
+  <g
+     fill="#ffee5b"
+     id="g11">
+    <path
+       d="m61 11a5.1 5.1 0 0 0 -4 4 5.1 5.1 0 0 0 -4-4 5.1 5.1 0 0 0 4-4 5.1 5.1 0 0 0 4 4z"
+       id="path8" />
+    <path
+       d="m13 5a5.1 5.1 0 0 0 -4 4 5.1 5.1 0 0 0 -4-4 5.1 5.1 0 0 0 4-4 5.1 5.1 0 0 0 4 4z"
+       id="path9" />
+    <path
+       d="m9 33a5.1 5.1 0 0 0 -4 4 5.1 5.1 0 0 0 -4-4 5.1 5.1 0 0 0 4-4 5.1 5.1 0 0 0 4 4z"
+       id="path10" />
+    <path
+       d="m63 45a5.1 5.1 0 0 0 -4 4 5.1 5.1 0 0 0 -4-4 5.1 5.1 0 0 0 4-4 5.1 5.1 0 0 0 4 4z"
+       id="path11" />
+  </g>
+</svg>

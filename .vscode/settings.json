@@ -1,0 +1,19 @@
+{
+    "liveServer.settings.root": "/dist",
+    "liveServer.settings.port": 5424,
+    "liveServer.settings.host": "localhost",
+    "liveServer.settings.CustomBrowser": "chrome",
+    "quicktask.enableNpm": false,
+    "VsCodeTaskButtons.tasks": [
+        {
+            "label": "$(notebook-move-down) Build",
+            "task": "Build",
+            "tooltip": "Build"
+        },
+        {
+            "label": "$(notebook-move-down) Publish",
+            "task": "Publish",
+            "tooltip": "Publish"
+        }
+    ],
+}

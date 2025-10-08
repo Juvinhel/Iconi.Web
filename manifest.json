@@ -1,0 +1,30 @@
+{
+    "lang": "en",
+    "name": "Iconi",
+    "short_name": "Iconi",
+    "description": "Icon manager App.",
+    "start_url": "./app.html",
+    "background_color": "#222",
+    "theme_color": "#db9efa",
+    "orientation": "any",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "img/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "img/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/favicon.ico",
+            "sizes": "8x8 16x16 32x32 48x48 64x64 128x128 256x256",
+            "type": "image/x-icon"
+        }
+    ],
+    "version": "<%= pkg.version %>",
+    "build-date": "%build-date%"
+}

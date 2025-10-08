@@ -1,0 +1,269 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "NPM Install",
+            "type": "shell",
+            "command": "npm i",
+        },
+        {
+            "label": "Init dist",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": [
+                "Create dist",
+            ],
+            "command": "Remove-Item",
+            "type": "shell",
+            "args": [
+                "dist/*",
+                "-Recurse",
+                "-Force"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Create dist",
+            "type": "shell",
+            "command": "New-Item",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "args": [
+                "-ItemType",
+                "Directory",
+                "-Force",
+                "-Path",
+                "dist"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Build Typescript",
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Build LESS",
+            "command": "LessBuilder",
+            "type": "shell",
+            "args": [
+                "-c",
+                "lessconfig.json",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "hide": true,
+        },
+        {
+            "label": "Copy Modules",
+            "command": "Copy-Item",
+            "type": "shell",
+            "args": [
+                "modules/**/*.min.js",
+                "-Destination",
+                "dist",
+                "-Force"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Copy Index",
+            "command": "Copy-Item",
+            "type": "shell",
+            "args": [
+                "index.html,",
+                "app.html,",
+                "img/favicon.svg,",
+                "img/favicon.png,",
+                "img/favicon.ico,",
+                "manifest.json",
+                "-Destination",
+                "dist",
+                "-Force"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Copy Fonts",
+            "command": "Copy-Item",
+            "type": "shell",
+            "args": [
+                "-Path",
+                "fonts",
+                "-Destination",
+                "dist",
+                "-Force",
+                "-Recurse",
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Copy Images",
+            "command": "Copy-Item",
+            "type": "shell",
+            "args": [
+                "-Path",
+                "img,node_modules\\@peach\\ui\\img,node_modules\\@peach\\ui.components\\img",
+                "-Destination",
+                "dist",
+                "-Force",
+                "-Recurse",
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Build ServiceWorker",
+            "command": "workbox generateSW workbox-config.js",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "hide": true,
+        },
+        {
+            "label": "Gen Version",
+            "command": "genversion dist/manifest.json -t manifest.json -f",
+            "type": "shell",
+            "hide": true,
+        },
+        {
+            "label": "Gen BuildDate",
+            "command": "(Get-Content dist/manifest.json).Replace('%build-date%', (Get-Date -Format \"o\")) | Set-Content dist/manifest.json",
+            "type": "shell",
+            "hide": true,
+        },
+        {
+            "label": "Create Test Data",
+            "type": "shell",
+            "command": "New-Item",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "args": [
+                "-ItemType",
+                "Directory",
+                "-Force",
+                "-Path",
+                "dist/library"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Copy Test Data",
+            "command": "Copy-Item",
+            "type": "shell",
+            "args": [
+                "D:/OneDrive/Assets/Icons/game-icons.net",
+                "-Destination",
+                "dist/library",
+                "-Recurse",
+                "-Force"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Build",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Init dist",
+                "Build Typescript",
+                "Build LESS",
+                "Copy Modules",
+                "Copy Index",
+                "Copy Fonts",
+                "Copy Images",
+                "Gen Version",
+                "Gen BuildDate",
+                "Build ServiceWorker",
+                "Create Test Data",
+                "Copy Test Data"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+        },
+        {
+            "label": "Init publish",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "dependsOn": [
+                "Create publish",
+            ],
+            "command": "Remove-Item",
+            "type": "shell",
+            "args": [
+                "publish/*",
+                "-Recurse",
+                "-Force"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Create publish",
+            "type": "shell",
+            "command": "New-Item",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "args": [
+                "-ItemType",
+                "Directory",
+                "-Force",
+                "-Path",
+                "publish"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Zip publish",
+            "type": "shell",
+            "command": "Compress-Archive",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "args": [
+                "-Path",
+                "dist/*",
+                "-DestinationPath",
+                "publish/web.zip"
+            ],
+            "hide": true,
+        },
+        {
+            "label": "Publish",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Build",
+                "Init publish",
+                "Zip publish"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+        },
+    ]
+}
