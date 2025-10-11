@@ -16,10 +16,13 @@ namespace Views.FolderView
     {
         const folderView = e.currentTarget as HTMLElement;
         folderView.addEventListener("selectfolder", selectFolder);
-        const library = new Data.Library("library");
+
+        const library = await Data.loadLibrary("library");
+
         folderView["library"] = library;
-        for await (const folder of library.load())
-            insertFolder(folderView, folder);
+
+        console.log(library.folders);
+        loadFolders(folderView.querySelector(".folders"), library.folders);
 
         const loading = folderView.querySelector(".loading");
         loading.remove();
@@ -32,7 +35,7 @@ namespace Views.FolderView
 
         const folderTagsElement = folderView.querySelector(".folder-tags");
         folderTagsElement.clearChildren();
-        if (folder) for (const tag of folder.tags)
-            folderTagsElement.append(<span title={ tag }>{ tag }</span>);
+        // if (folder) for (const tag of folder.tags)
+        //     folderTagsElement.append(<span title={ tag }>{ tag }</span>);
     }
 }

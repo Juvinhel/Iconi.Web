@@ -171,7 +171,7 @@
             "command": "Copy-Item",
             "type": "shell",
             "args": [
-                "D:/OneDrive/Assets/Icons/game-icons.net",
+                "D:\\Test2\\*",
                 "-Destination",
                 "dist/library",
                 "-Recurse",

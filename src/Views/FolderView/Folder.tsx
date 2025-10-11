@@ -1,49 +1,20 @@
 namespace Views.FolderView
 {
-    export function insertFolder(folderView: HTMLElement, folder: Data.Folder)
+    export function loadFolders(container: HTMLElement, folders: Data.Folder[])
     {
-        if (folder.parent)
-        {
-            for (const parentFolderElement of folderView.querySelectorAll(".folder"))
-                if (parentFolderElement["folder"] == folder.parent)
-                {
-                    insertFolderIntoParent(parentFolderElement as HTMLElement, folder);
-                    return;
-                }
-        }
-        else
-        {
-            const foldersElement = folderView.querySelector(".folders");
-            foldersElement.append(folderElement(folder));
-        }
-    }
-
-    function insertFolderIntoParent(parentFolderElement: HTMLElement, folder: Data.Folder)
-    {
-        const subfoldersElement = parentFolderElement.querySelector(".subfolders");
-        subfoldersElement.append(folderElement(folder));
-        parentFolderElement.classList.toggle("has-subfolders", true);
-
-        let parent = parentFolderElement;
-        do
-        {
-            if (parent.classList.contains("folder"))
-            {
-                const fileCountElement = parent.querySelector(".file-count") as HTMLSpanElement;
-                const currentCount = fileCountElement.textContent ? parseInt(fileCountElement.textContent) : 0;
-                const newCount = currentCount + folder.files.length;
-                fileCountElement.title = fileCountElement.textContent = newCount.toFixed(0);
-            }
-        } while (parent = parent.parentElement);
+        for (const folder of folders)
+            container.append(folderElement(folder));
     }
 
     function folderElement(folder: Data.Folder)
     {
-        return <div class="folder" folder={ folder } path={ folder.path }>
+        return <div class={ ["folder", folder.folders.length > 0 ? "has-subfolders" : null] } folder={ folder }>
             <a class="expander" onclick={ expanderClick } />
             <span class="title" title={ folder.name } onclick={ titleXORClick }>{ folder.name }</span>
-            <span class="file-count" title={ folder.files.length ? folder.files.length : "no files" }>{ folder.files.length ? folder.files.length : "" }</span>
-            <div class="subfolders"></div>
+            <span class="file-count" title={ folder.files.length ? folder.files.length : "no files" }>{ folder.files.length }</span>
+            <div class="subfolders">
+                { folder.folders.map(f => folderElement(f)) }
+            </div>
         </div>;
     }
 
