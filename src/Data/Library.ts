@@ -24,7 +24,7 @@ namespace Data
             else
             {
                 list = [];
-                for await (const file of scanForFiles(url))
+                for await (const file of crawlDirectoryListing(url))
                 {
                     list.push(file);
                     progressDialog.max = list.length;
@@ -108,65 +108,6 @@ namespace Data
         return _tag;
     }
 
-    async function* scanForFiles(url: string): AsyncIterable<string>
-    {
-        const urls: LinkedStack<string> = new LinkedStack<string>();
-        urls.unshift(url);
-        const done: LinkedStack<string> = new LinkedStack<string>();
-
-        while (urls.length)
-        {
-            const current = urls.shift();
-            done.unshift(current);
-            try
-            {
-                const { folders, files } = await scanFolder(url, current);
-                urls.unshift(...folders.filter(f => !done.includes(f)));
-
-                for (const file of files)
-                    yield file;
-            }
-            catch { }
-        }
-    }
-
-    async function scanFolder(root: string, url: string): Promise<{ folders: string[], files: string[]; }>
-    {
-        const folders: string[] = [];
-        const files: string[] = [];
-
-        try
-        {
-            const response = await fetch(url + "/"); // folders end with /
-            const text = await response.text();
-
-            const parser = new DOMParser();
-            const html = parser.parseFromString(text, "text/html");
-
-            const links = html.querySelectorAll("a");
-            for (const link of links)
-            {
-                const href = link.href;
-                if (!href.startsWith(root)) continue;
-
-                if (href.endsWith("/")) 
-                {   // IIS
-                    folders.push(href.trimRight("/"));
-                    continue;
-                }
-                if (link.classList.values().some(c => c.includes("directory")))
-                {   // Live Server
-                    folders.push(href.trimRight("/"));
-                    continue;
-                }
-
-                files.push(href);
-            }
-        } catch (exception) { console.log(exception); }
-
-        return { folders, files };
-    }
-
     function checkExlusions(text: string, exclusions: (string | RegExp)[]): boolean
     {
         for (const exclusion of exclusions)
@@ -182,6 +123,16 @@ namespace Data
                     break;
             }
         return false;
+    }
+
+    export function* findFiles(folder: Folder): IterableIterator<File>
+    {
+        for (const file of folder.files)
+            yield file;
+
+        for (const subfolder of folder.folders)
+            for (const file of findFiles(subfolder))
+                yield file;
     }
 
     export type Library = {

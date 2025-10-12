@@ -17,7 +17,6 @@ namespace Views.FolderView
         folderView.addEventListener("selectfolder", selectFolder);
 
         const library = await Data.loadLibrary(App.config.library);
-
         folderView["library"] = library;
 
         loadFolders(folderView.querySelector(".folders"), library.folders);
