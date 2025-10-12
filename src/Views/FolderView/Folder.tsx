@@ -9,9 +9,11 @@ namespace Views.FolderView
     function folderElement(folder: Data.Folder)
     {
         return <div class={ ["folder", folder.folders.length > 0 ? "has-subfolders" : null] } folder={ folder }>
-            <a class="expander" onclick={ expanderClick } />
-            <span class="title" title={ folder.name } onclick={ titleXORClick }>{ folder.name }</span>
-            <span class="file-count" title={ folder.files.length ? folder.files.length : "no files" }>{ folder.files.length }</span>
+            <div class="header">
+                <a class="expander" onclick={ expanderClick } />
+                <span class="title" title={ folder.name } onclick={ titleXORClick }>{ folder.name }</span>
+                <span class="file-count" title={ folder.files.length ? folder.files.length : "no files" }>{ folder.files.length }</span>
+            </div>
             <div class="subfolders">
                 { folder.folders.map(f => folderElement(f)) }
             </div>

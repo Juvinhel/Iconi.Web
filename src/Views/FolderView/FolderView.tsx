@@ -7,7 +7,6 @@ namespace Views.FolderView
             <div class="folders" />
             <div class="info">
                 <span class="folder-tags" />
-                <span class="loading">Loading!</span>
             </div>
         </div>;
     }
@@ -21,7 +20,6 @@ namespace Views.FolderView
 
         folderView["library"] = library;
 
-        console.log(library.folders);
         loadFolders(folderView.querySelector(".folders"), library.folders);
 
         const loading = folderView.querySelector(".loading");
@@ -35,7 +33,7 @@ namespace Views.FolderView
 
         const folderTagsElement = folderView.querySelector(".folder-tags");
         folderTagsElement.clearChildren();
-        // if (folder) for (const tag of folder.tags)
-        //     folderTagsElement.append(<span title={ tag }>{ tag }</span>);
+        if (folder) for (const tag of folder.tags)
+            folderTagsElement.append(<span title={ tag }>{ tag }</span>);
     }
 }

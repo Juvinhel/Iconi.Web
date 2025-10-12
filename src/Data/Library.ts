@@ -29,11 +29,19 @@ namespace Data
             }
 
             list = list.map(p => new URL(p, library.url).toString());
+            let i = 0;
+            const updateInterval = calculateUpdateInterval(list.length);
             for (const file of list)
             {
                 insertFile(library, file);
-                ++progressDialog.value;
+                ++i;
+                if (i % updateInterval == 0)
+                {
+                    progressDialog.value = i;
+                    await delay(0); // allow ui upates
+                }
             }
+            progressDialog.value = i;
         }
         catch (error)
         {
@@ -46,7 +54,7 @@ namespace Data
 
     function insertFile(library: Library, url: string)
     {
-        const filePath = url.substring(library.url.length).trimChar("/").toString();
+        const filePath = decodeURI(url.substring(library.url.length).trimChar("/"));
         if (!filePath.includes('/')) return; // Files in root folder are ignored.
 
         let [remainingPath, fileName] = filePath.splitLast("/");
@@ -71,7 +79,8 @@ namespace Data
         let folder: Folder = folders.find(f => String.localeCompare(f.name, folderName) == 0); // localCompare needed because String and string are not equal
         if (!folder)
         {
-            folder = { name: folderName, folders: [], files: [], };
+            folder = { name: folderName, folders: [], files: [], tags: parseTags(folderName) };
+            if (parent) folder.tags.unshift(...parent.tags);
             folders.push(folder);
         }
         return folder;
@@ -100,17 +109,18 @@ namespace Data
 
     async function* scanForFiles(url: string): AsyncIterable<string>
     {
-        const urls: string[] = [url];
-        const done: string[] = [];
+        const urls: LinkedStack<string> = new LinkedStack<string>();
+        urls.unshift(url);
+        const done: LinkedStack<string> = new LinkedStack<string>();
 
         while (urls.length)
         {
             const current = urls.shift();
-            done.push(current);
+            done.unshift(current);
             try
             {
                 const { folders, files } = await scanFolder(url, current);
-                urls.push(...folders.filter(f => !done.includes(f)));
+                urls.unshift(...folders.filter(f => !done.includes(f)));
 
                 for (const file of files)
                     yield file;
@@ -126,7 +136,7 @@ namespace Data
 
         try
         {
-            const response = await fetch(url);
+            const response = await fetch(url + "/"); // folders end with /
             const text = await response.text();
 
             const parser = new DOMParser();
@@ -165,6 +175,7 @@ namespace Data
         name: string;
         folders: Folder[];
         files: File[];
+        tags: string[];
     };
 
     export type File = {
