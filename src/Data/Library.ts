@@ -1,11 +1,14 @@
 namespace Data
 {
-    export async function loadLibrary(url: string): Promise<Library>
+    export async function loadLibrary(config?: LibraryConfig): Promise<Library>
     {
+        let url = config?.url ?? "library";
         if (!(url.startsWith("http://") || url.startsWith("https://")))
             url = new URL(url, location.toString()).toString();
+        const folderExclusions = config?.["folder-exclusions"] ?? [];
+        const tagExclusions = config?.["tag-exclusions"] ?? [];
 
-        const library: Library = { url, folders: [] };
+        const library: Library = { url, folderExclusions, tagExclusions, folders: [] };
         const progressDialog = await UI.Dialog.progress({ title: "Building Library", displayType: "Absolute", max: 0, value: 0 });
 
         try
@@ -55,11 +58,11 @@ namespace Data
     function insertFile(library: Library, url: string)
     {
         const filePath = decodeURI(url.substring(library.url.length).trimChar("/"));
-        if (!filePath.includes('/')) return; // Files in root folder are ignored.
+        if (!filePath.includes("/")) return; // Files in root folder are ignored.
 
         let [remainingPath, fileName] = filePath.splitLast("/");
         const [name, extension] = fileName.splitLast(".");
-        const file: File = { name, extension, url, tags: parseTags(remainingPath + "/" + name), };
+        const file: File = { name, extension, url, tags: parseTags(remainingPath + "/" + name, library.tagExclusions), };
 
         let current: Folder | null = null;
         do
@@ -67,7 +70,7 @@ namespace Data
             let folderName;
             [folderName, remainingPath] = remainingPath.splitFirst("/");
 
-            if (folderName.toLowerCase() == "svg") continue;
+            if (checkExlusions(folderName, library.folderExclusions)) continue;
             current = getOrCreateFolder(library, current, folderName);
             current.files.push(file);
         } while (remainingPath);
@@ -79,23 +82,21 @@ namespace Data
         let folder: Folder = folders.find(f => String.localeCompare(f.name, folderName) == 0); // localCompare needed because String and string are not equal
         if (!folder)
         {
-            folder = { name: folderName, folders: [], files: [], tags: parseTags(folderName) };
+            folder = { name: folderName, folders: [], files: [], tags: parseTags(folderName, library.tagExclusions) };
             if (parent) folder.tags.unshift(...parent.tags);
             folders.push(folder);
         }
         return folder;
     }
 
-    function parseTags(_text: string): string[]
+    function parseTags(_text: string, exclusions: (string | RegExp)[]): string[]
     {
         if (!_text) return [];
 
-        return Array.from(new Set(
-            _text
-                .split(/[-\/]/)
+        return Array.from(new Set( // new Set => distinct items
+            _text.split(/[-\/]/)
                 .map(x => refineTag(x))
-                .filter(x => !(x.length >= 5 && /^[0-9]+$/.test(x)))
-        ));
+                .filter(x => !checkExlusions(x, exclusions))));
     }
 
     function refineTag(_tag: string): string
@@ -140,7 +141,7 @@ namespace Data
             const text = await response.text();
 
             const parser = new DOMParser();
-            const html = parser.parseFromString(text, 'text/html');
+            const html = parser.parseFromString(text, "text/html");
 
             const links = html.querySelectorAll("a");
             for (const link of links)
@@ -166,8 +167,27 @@ namespace Data
         return { folders, files };
     }
 
+    function checkExlusions(text: string, exclusions: (string | RegExp)[]): boolean
+    {
+        for (const exclusion of exclusions)
+            switch (typeof exclusion)
+            {
+                case "string":
+                    if (exclusion == text)
+                        return true;
+                    break;
+                case "object":
+                    if (exclusion.test(text))
+                        return true;
+                    break;
+            }
+        return false;
+    }
+
     export type Library = {
         url: string;
+        folderExclusions: (string | RegExp)[];
+        tagExclusions: (string | RegExp)[];
         folders: Folder[];
     };
 

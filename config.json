@@ -1,0 +1,11 @@
+{
+    "library": {
+        "url": "library",
+        "folder-exclusions": [
+            "svg"
+        ],
+        "tag-exclusions": [
+            "/^[0-9]{5,}$/"
+        ]
+    }
+}

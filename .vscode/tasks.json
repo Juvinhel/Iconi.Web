@@ -92,6 +92,7 @@
                 "img/favicon.svg,",
                 "img/favicon.png,",
                 "img/favicon.ico,",
+                "config.json,",
                 "manifest.json",
                 "-Destination",
                 "dist",

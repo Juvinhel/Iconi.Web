@@ -16,14 +16,11 @@ namespace Views.FolderView
         const folderView = e.currentTarget as HTMLElement;
         folderView.addEventListener("selectfolder", selectFolder);
 
-        const library = await Data.loadLibrary("library");
+        const library = await Data.loadLibrary(App.config.library);
 
         folderView["library"] = library;
 
         loadFolders(folderView.querySelector(".folders"), library.folders);
-
-        const loading = folderView.querySelector(".loading");
-        loading.remove();
     }
 
     function selectFolder(e: CustomEvent)

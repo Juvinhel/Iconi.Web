@@ -5,6 +5,8 @@ class App
         workbench?: boolean;
     })
     {
+        [this.config] = await Promise.all([Data.loadConfig()]);
+
         UI.LazyLoad.ErrorImageUrl = "img/icons/not-found.png";
         UI.LazyLoad.LoadingImageUrl = "img/icons/spinner.svg";
         UI.LazyLoad.Start();
@@ -16,6 +18,8 @@ class App
         const main = Views.Main();
         document.querySelector("main").append(main);
     }
+
+    public static config: Data.Config;
 
     private static ctrl: boolean = false;
     private static pressCTRL(pressed: boolean)
