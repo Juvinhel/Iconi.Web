@@ -4,7 +4,9 @@ namespace Views.FolderView
     {
         return <div class="folder-view" oninserted={ initFolderView }>
             <h2 class="title">Library</h2>
-            <div class="folders" />
+            <div class="container">
+                <div class="folders" />
+            </div>
             <div class="info">
                 <span class="folder-tags" />
             </div>

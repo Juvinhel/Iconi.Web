@@ -4,7 +4,7 @@ namespace Views
     {
         return <pane-container class="container" onselectfolder={ selectionChanged }>
             <div>{ FolderView.FolderView() }</div>
-            <div>{ ListView.ListView() }</div>
+            <div><ListView.ListViewElement /></div>
             <div><div class="icon-view"></div></div>
         </pane-container>;
     }
@@ -14,6 +14,8 @@ namespace Views
         const sender = event.currentTarget as HTMLElement;
         const folders = [...sender.querySelectorAll(".folder.selected")].map(x => x["folder"] as Data.Folder);
         const files = Array.from(new Set(folders.mapMany(folder => [...Data.findFiles(folder)])));
-        ListView.showFiles(files);
+
+        const listView = sender.querySelector("my-list-view") as ListView.ListViewElement;
+        listView.showFiles(files);
     }
 }

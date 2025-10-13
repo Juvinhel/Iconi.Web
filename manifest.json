@@ -5,7 +5,7 @@
     "description": "Icon manager App.",
     "start_url": "./app.html",
     "background_color": "#222",
-    "theme_color": "#db9efa",
+    "theme_color": "#8bb3ce",
     "orientation": "any",
     "display": "standalone",
     "icons": [
