@@ -1,0 +1,37 @@
+my-list
+{
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-areas: "list" "paging";
+    overflow: hidden;
+    gap: 0.25em;
+
+    > .container
+    {
+        grid-area: list;
+        height: 100%;
+        overflow-y: auto;
+
+        > .list
+        {
+            display: flex;
+            flex-flow: row;
+            flex-wrap: wrap;
+            height: max-content;
+            gap: 0.5em;
+        }
+    }
+
+    > .count
+    {
+        grid-area: paging;
+        justify-self: start;
+    }
+
+    > .paging
+    {
+        grid-area: paging;
+        justify-self: end;
+    }
+}

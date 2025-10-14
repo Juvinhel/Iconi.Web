@@ -1,17 +1,14 @@
-.folder-view
+my-library
 {
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr;
-    grid-template-areas: "title" "folders" "info";
+    grid-template-areas: "title" "folders" "footer";
     height: 100%;
     gap: 0.25em;
 
     > .title
     {
-        z-index: 1000;
-        position: sticky;
-        top: 0;
         grid-area: title;
         padding: 0.5em;
         background-color: var(--page-background-color);
@@ -43,31 +40,13 @@
         }
     }
 
-    > .info
+    > .footer
     {
-        z-index: 1000;
-        position: sticky;
-        bottom: 0;
-        grid-area: info;
-        height: max-content;
+        grid-area: footer;
         width: auto; // fixes padding
+        height: max-content;
         min-height: 1em;
         padding: 0.25em;
         background: var(--background-color);
-
-        > .folder-tags
-        {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.25em;
-
-            > *
-            {
-                padding: 0.125em 0.25em;
-                border-radius: var(--corner-radius);
-                background: var(--dark-background-color);
-                user-select: none;
-            }
-        }
     }
 }

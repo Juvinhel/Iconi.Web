@@ -1,0 +1,41 @@
+my-collection
+{
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    grid-template-columns: 1fr;
+    grid-template-areas: "title" "search" "list" "footer";
+    width: 100%;
+    height: 100%;
+    gap: 0.25em;
+
+    > .title
+    {
+        grid-area: title;
+        padding: 0.5em;
+        background-color: var(--page-background-color);
+        text-align: center;
+    }
+
+    > my-search
+    {
+        grid-area: search;
+    }
+
+    > my-list
+    {
+        grid-area: list;
+    }
+
+    > .footer
+    {
+        grid-area: footer;
+        min-height: 1em;
+        padding: 0.25em;
+        background: var(--background-color);
+
+        > .file-tags
+        {
+            grid-area: tags;
+        }
+    }
+}

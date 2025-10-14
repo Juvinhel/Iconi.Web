@@ -1,0 +1,48 @@
+my-file-tile
+{
+    aspect-ratio: 1;
+    width: 6em;
+    padding: 0.5em;
+    //border-width: 2px;
+    border-radius: 0.25em;
+    //border-color: white;
+    background: repeating-conic-gradient(#e0e0e0 0 25%, #FFFFFF 0 50%) 50% / 20px 20px;
+    cursor: pointer;
+
+    > img
+    {
+        width: 100%;
+        height: 100%;
+    }
+
+    > .check
+    {
+        visibility: hidden;
+        position: absolute;
+        top: -0.5em;
+        right: -0.25em;
+        width: 2em;
+        height: 2em;
+        color: var(--foreground-color);
+    }
+
+    &:hover
+    {
+        background: repeating-conic-gradient(#009ece 0 25%, #82c9df 0 50%) 50% / 20px 20px;
+
+        > .check
+        {
+            color: var(--foreground-color);
+        }
+    }
+
+    &.selected
+    {
+        background: var(--accent-color);
+
+        > .check
+        {
+            visibility: visible;
+        }
+    }
+}

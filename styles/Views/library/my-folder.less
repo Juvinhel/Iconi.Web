@@ -1,4 +1,4 @@
-.folder
+my-folder
 {
     display: grid;
     grid-template-rows: auto 1fr;
@@ -13,6 +13,7 @@
         grid-template-areas: "expander title count";
         grid-area: header;
         padding: 0 0.25em;
+        padding-top: 0.25em; // looks weird otherwise
         gap: 0.25em;
         border-radius: var(--corner-radius);
 
@@ -67,9 +68,19 @@
             background-color: var(--accent-color);
         }
     }
+
+    > .header:hover
+    {
+        background-color: var(--accent-color);
+
+        > .file-count
+        {
+            background-color: var(--accent-color);
+        }
+    }
 }
 
-.folder.has-subfolders
+my-folder.has-subfolders
 {
     > .header > .expander
     {
