@@ -1,0 +1,48 @@
+my-info
+{
+    display: grid;
+    grid-template-rows: auto auto max(30%) 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "title" "file" "preview" "." "actions";
+    width: 100%;
+    height: 100%;
+    gap: 0.25em;
+
+    > .title
+    {
+        grid-area: title;
+        padding: 0.5em;
+        background-color: var(--page-background-color);
+        text-align: center;
+    }
+
+    > .file
+    {
+        grid-area: file;
+    }
+
+    > .preview
+    {
+        grid-area: preview;
+        width: 100%;
+        height: 100%;
+        background: repeating-conic-gradient(#e0e0e0 0 25%, #FFFFFF 0 50%) 50% / 20px 20px;
+
+        > img
+        {
+            position: absolute;
+            width: calc(100% - 1em);
+            height: calc(100% - 1em);
+            padding: 0.5em;
+            object-fit: contain;
+        }
+    }
+
+    > .actions
+    {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: auto;
+        grid-auto-flow: row;
+    }
+}

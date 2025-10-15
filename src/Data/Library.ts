@@ -62,6 +62,7 @@ namespace Data
 
         let [remainingPath, fileName] = filePath.splitLast("/");
         const [name, extension] = fileName.splitLast(".");
+        if (extension.toLowerCase() != "svg") return;
         const file: File = { name, extension, url, tags: parseTags(remainingPath + "/" + name, library.tagExclusions), };
 
         let current: Folder | null = null;

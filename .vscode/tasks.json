@@ -75,7 +75,7 @@
             "command": "Copy-Item",
             "type": "shell",
             "args": [
-                "modules/**/*.min.js",
+                "modules/**/*.js",
                 "-Destination",
                 "dist",
                 "-Force"
@@ -195,7 +195,7 @@
                 "Gen BuildDate",
                 "Build ServiceWorker",
                 "Create Test Data",
-                "Copy Test Data"
+                //"Copy Test Data"
             ],
             "group": {
                 "kind": "build",

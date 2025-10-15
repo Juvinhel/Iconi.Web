@@ -2,14 +2,14 @@ namespace Views
 {
     export function Main()
     {
-        return <pane-container class="container" onfolderselected={ selectionChanged } ontagclicked={ tagClicked }>
+        return <pane-container class="container" onfolderselected={ folderSelectionChanged } ontagclicked={ tagClicked } onfileselected={ fileSelectionChanged }>
             <div><Library.LibraryElement /></div>
             <div><Collection.CollectionElement /></div>
-            <div><div class="icon-view"></div></div>
+            <div><Info.InfoElement /></div>
         </pane-container>;
     }
 
-    function selectionChanged(event: Event)
+    function folderSelectionChanged(event: Event)
     {
         const sender = event.currentTarget as HTMLElement;
         const folders = [...sender.querySelectorAll("my-folder.selected") as NodeListOf<Library.FolderElement>].map(x => x.folder);
@@ -17,6 +17,15 @@ namespace Views
 
         const collectionElement = sender.querySelector("my-collection") as Collection.CollectionElement;
         collectionElement.showFiles(files);
+    }
+
+    function fileSelectionChanged(event: Event)
+    {
+        const sender = event.currentTarget as HTMLElement;
+        const files = [...sender.querySelectorAll("my-file-tile.selected") as NodeListOf<Collection.FileTileElement>].map(x => x.file);
+
+        const infoElement = sender.querySelector("my-info") as Info.InfoElement;
+        infoElement.showFiles(files);
     }
 
     function tagClicked(event: UI.Elements.TagClickedEvent)
