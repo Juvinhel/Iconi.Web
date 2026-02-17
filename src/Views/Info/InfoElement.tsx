@@ -23,6 +23,7 @@ namespace Views.Info
                 <div />,
                 <div class="actions">
                     <button onclick={ this.downloadClick }>Download</button>
+                    { Data.Bridge ? <button onclick={ this.copyToClipboard }>Copy to Clipboard</button> : null }
                 </div>
             ];
         }
@@ -46,6 +47,40 @@ namespace Views.Info
             }
             else
                 UI.Dialog.download({ title: "Download Files", files: this.files, zipName: "icons.zip", allowClose: true });
+        }.bind(this);
+
+        public copyToClipboard = async function (this: InfoElement)
+        {
+            const progressDialog = this.files.length > 1 ? await UI.Dialog.progress({ title: "Copy files to clipboard", displayType: "Percent", max: this.files.length, value: 0 }) : null;
+            try
+            {
+                const fileNames: string[] = [];
+                const datas: string[] = [];
+                for (let i = 0; i < this.files.length; ++i)
+                {
+                    fileNames.push(this.files[i].name + "." + this.files[i].extension);
+                    const response = await fetch(this.files[i].url);
+                    const blob = await response.blob();
+                    const dataUri = await new Promise<string>(callback =>
+                    {
+                        let reader = new FileReader();
+                        reader.onload = function () { callback(this.result as string); };
+                        reader.readAsDataURL(blob);
+                    });
+                    console.log("dataUri", dataUri);
+                    const base64 = dataUri.splitFirst("base64,")[1];
+                    console.log(base64);
+                    datas.push(base64);
+                    if (progressDialog) ++progressDialog.value;
+                }
+                await Data.Bridge.CopyToClipboard(fileNames, datas);
+                progressDialog?.close();
+            }
+            catch (ex)
+            {
+                progressDialog?.close();
+                UI.Dialog.error(ex);
+            }
         }.bind(this);
     }
 

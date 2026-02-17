@@ -11,6 +11,9 @@ namespace Views.Collection
             this.addEventListener("fileselected", this.fileSelected.bind(this));
             this.addEventListener("tagclicked", this.tagClicked.bind(this));
             this.addEventListener("search", this.search.bind(this));
+            this.tabIndex = -1; // allow focus for keydown
+            this.addEventListener("keydown", this.keydown.bind(this), { capture: false, passive: false });
+            this.addEventListener("keyup", this.keyup.bind(this), { capture: false, passive: false });
         }
 
         private searchElement: SearchElement;
@@ -75,6 +78,30 @@ namespace Views.Collection
 
             event.stopPropagation(); // stop handling in main
             event.preventDefault();
+        }
+
+        private keyup(event: KeyboardEvent)
+        {
+            if (event.ctrlKey && event.key == "a")
+            {
+                const selection = !([...document.querySelectorAll("my-file-tile")] as Views.Collection.FileTileElement[]).some(x => x.selected);
+                for (const fileTile of document.querySelectorAll("my-file-tile") as NodeListOf<Views.Collection.FileTileElement>)
+                    fileTile.selected = selection;
+                event.preventDefault();
+            }
+            if (event.ctrlKey && event.key == "c")
+            {
+                const info = document.querySelector("my-info") as Info.InfoElement;
+                info.copyToClipboard();
+            }
+        }
+
+        private keydown(event: KeyboardEvent)
+        {
+            if (event.ctrlKey && event.key == "a")
+                event.preventDefault();
+            if (event.ctrlKey && event.key == "c")
+                event.preventDefault();
         }
     }
 
