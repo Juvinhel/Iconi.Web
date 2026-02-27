@@ -63,7 +63,7 @@ namespace Data
         let [remainingPath, fileName] = filePath.splitLast("/");
         const [name, extension] = fileName.splitLast(".");
         if (extension.toLowerCase() != "svg") return;
-        const file: File = { name, extension, url, tags: parseTags(remainingPath + "/" + name, library.tagExclusions), };
+        const file: File = { parent: null, name, extension, url, tags: parseTags(remainingPath + "/" + name, library.tagExclusions), };
 
         let current: Folder | null = null;
         do
@@ -83,7 +83,7 @@ namespace Data
         let folder: Folder = folders.find(f => String.localeCompare(f.name, folderName) == 0); // localCompare needed because String and string are not equal
         if (!folder)
         {
-            folder = { name: folderName, folders: [], files: [], tags: parseTags(folderName, library.tagExclusions) };
+            folder = { parent, name: folderName, folders: [], files: [], tags: parseTags(folderName, library.tagExclusions) };
             if (parent) folder.tags.unshift(...parent.tags);
             folders.push(folder);
         }
@@ -129,8 +129,10 @@ namespace Data
     export function* findFiles(folder: Folder): IterableIterator<File>
     {
         for (const file of folder.files)
+        {
+            file.parent = folder;
             yield file;
-
+        }
         for (const subfolder of folder.folders)
             for (const file of findFiles(subfolder))
                 yield file;
@@ -144,6 +146,7 @@ namespace Data
     };
 
     export type Folder = {
+        parent: Folder;
         name: string;
         folders: Folder[];
         files: File[];
@@ -151,6 +154,7 @@ namespace Data
     };
 
     export type File = {
+        parent: Folder;
         url: string;
         name: string;
         extension: string;

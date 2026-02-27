@@ -36,11 +36,7 @@ namespace Views.Library
             loadFolders(this.foldersElement, this.library.folders);
 
             const folderElement = this.foldersElement.querySelector("my-folder") as FolderElement;
-            if (folderElement)
-            {
-                folderElement.selected = true;
-                if (folderElement.classList.contains("has-subfolders")) folderElement.expanded = true;
-            }
+            if (folderElement) folderElement.selected = true;
         }
 
         private folderSelected(event: CustomEvent)

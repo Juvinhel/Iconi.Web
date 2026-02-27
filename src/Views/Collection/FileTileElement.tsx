@@ -12,6 +12,7 @@ namespace Views.Collection
             this.append(...this.build());
 
             this.addEventListener("click", this.clicked.bind(this));
+            this.addEventListener("rightclick", showContextMenu.bind(this));
         }
 
         private build()

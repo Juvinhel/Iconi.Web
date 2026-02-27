@@ -87,9 +87,9 @@ namespace Views.Library
             if (!App.multiselect)
             {
                 const folders = this.closest(".folders") as HTMLDivElement;
-                for (const folderElement of folders.querySelectorAll("my-folder.selected"))
+                for (const folderElement of folders.querySelectorAll("my-folder.selected") as NodeListOf<FolderElement>)
                     if (folderElement != this)
-                        folderElement.classList.toggle("selected", false);
+                        folderElement.selected = false;
             }
 
             this.selected = !this.selected;

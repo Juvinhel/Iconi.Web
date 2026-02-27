@@ -91,8 +91,11 @@ namespace Views.Collection
             }
             if (event.ctrlKey && event.key == "c")
             {
-                const info = document.querySelector("my-info") as Info.InfoElement;
-                info.copyToClipboard();
+                if (copySVGsToClipboard)
+                {
+                    const selectedFileTileElements = [...this.querySelectorAll("my-file-tile.selected") as NodeListOf<FileTileElement>];
+                    copySVGsToClipboard(selectedFileTileElements.map(x => x.file));
+                }
             }
         }
 

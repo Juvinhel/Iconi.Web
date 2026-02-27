@@ -2,7 +2,7 @@ namespace Views
 {
     export function Main()
     {
-        return <pane-container class="container" onfolderselected={ folderSelectionChanged } ontagclicked={ tagClicked } onfileselected={ fileSelectionChanged }>
+        return <pane-container class="container" onfolderselected={ folderSelectionChanged } ontagclicked={ tagClicked } onfileselected={ fileSelectionChanged } onselectfolder={ selectFolder }>
             <div><Library.LibraryElement /></div>
             <div><Collection.CollectionElement /></div>
             <div><Info.InfoElement /></div>
@@ -33,5 +33,26 @@ namespace Views
         const main = event.currentTarget as HTMLElement;
         const searchElement = main.querySelector("my-search") as Collection.SearchElement;
         searchElement.toggleTag(event.tag);
+    }
+
+    function selectFolder(this: HTMLElement, event: CustomEvent)
+    {
+        const folder = event.detail.folder as Data.Folder;
+
+        if (!App.multiselect)
+        {
+            for (const folderElement of this.querySelectorAll("my-folder.selected") as NodeListOf<Library.FolderElement>)
+                if (folderElement.folder != folder)
+                    folderElement.selected = false;
+        }
+
+        for (const folderElement of this.querySelectorAll("my-folder") as NodeListOf<Library.FolderElement>)
+            if (folderElement.folder == folder)
+            {
+                const parentFolderElement = folderElement.closest("my-folder") as Library.FolderElement;
+                parentFolderElement.expanded = true;
+                folderElement.selected = true;
+                return;
+            }
     }
 }
