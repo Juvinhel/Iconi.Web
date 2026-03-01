@@ -23,6 +23,7 @@ namespace Views.Info
                 <div />,
                 <div class="actions">
                     <button onclick={ () => { Collection.downloadFiles(this.files); } }>Download</button>
+                    { Collection.openInInkscape ? <button onclick={ () => { Collection.openInInkscape(this.files); } }>Open Files in InkScape</button> : null }
                     { Collection.copySVGsToClipboard ? <button onclick={ () => { Collection.copySVGsToClipboard(this.files); } }>Copy Images to Clipboard</button> : null }
                     { Collection.copyFilesToClipboard ? <button onclick={ () => { Collection.copyFilesToClipboard(this.files); } }>Copy Files to Clipboard</button> : null }
                 </div>

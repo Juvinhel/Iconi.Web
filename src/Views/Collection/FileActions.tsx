@@ -22,6 +22,14 @@ namespace Views.Collection
             await downloadFiles(fileTileElements.map(x => x.file));
         } }><span>Download</span></menu-button>);
 
+        if (openInInkscape)
+        {
+            menuButtons.push(<menu-button title="Open in InkScape" onclick={ async () =>
+            {
+                await openInInkscape(fileTileElements.map(x => x.file));
+            } }><span>Open in InkScape</span></menu-button>);
+        }
+
         if (copySVGsToClipboard)
         {
             menuButtons.push(<menu-button title="Copy as Image" onclick={ async () =>
@@ -53,6 +61,41 @@ namespace Views.Collection
         else
             UI.Dialog.download({ title: "Download Files", files, zipName: "icons.zip", allowClose: true });
     }
+
+    export const openInInkscape: ((files: Data.File[]) => Promise<void>) | null = Data.Bridge ?
+        async function (files: Data.File[])
+        {
+            const progressDialog = files.length > 1 ? await UI.Dialog.progress({ title: "Opening Files in InkScape", displayType: "Percent", max: files.length, value: 0 }) : null;
+            try
+            {
+                const fileNames: string[] = [];
+                const datas: string[] = [];
+                for (let i = 0; i < files.length; ++i)
+                {
+                    fileNames.push(files[i].name + "." + files[i].extension);
+                    const response = await fetch(files[i].url);
+                    const blob = await response.blob();
+                    const dataUri = await new Promise<string>(callback =>
+                    {
+                        let reader = new FileReader();
+                        reader.onload = function () { callback(this.result as string); };
+                        reader.readAsDataURL(blob);
+                    });
+                    console.log("dataUri", dataUri);
+                    const base64 = dataUri.splitFirst("base64,")[1];
+                    console.log(base64);
+                    datas.push(base64);
+                    if (progressDialog) ++progressDialog.value;
+                }
+                await Data.Bridge.OpenInInkScape(fileNames, datas);
+                progressDialog?.close();
+            }
+            catch (ex)
+            {
+                progressDialog?.close();
+                UI.Dialog.error(ex);
+            }
+        } : null;
 
     export const copySVGsToClipboard: ((files: Data.File[]) => Promise<void>) | null = ("supports" in window.ClipboardItem) && window.ClipboardItem.supports("image/svg+xml") ?
         async function (files: Data.File[])

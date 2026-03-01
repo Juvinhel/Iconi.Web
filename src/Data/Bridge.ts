@@ -5,6 +5,7 @@ namespace Data
     export interface Bridge
     {
         CopyToClipboard(_fileNames: string[], _datas: string[]): Promise<void>;
+        OpenInInkScape(_fileNames: string[], _datas: string[]): Promise<void>;
     }
 }
 
