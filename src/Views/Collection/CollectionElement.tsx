@@ -8,8 +8,7 @@ namespace Views.Collection
 
             this.append(...this.build());
 
-            this.addEventListener("fileselected", this.fileSelected.bind(this));
-            this.addEventListener("tagclicked", this.tagClicked.bind(this));
+            this.addEventListener("fileselectionchanged", this.fileSelectionChanged.bind(this));
             this.addEventListener("search", this.search.bind(this));
             this.tabIndex = -1; // allow focus for keydown
             this.addEventListener("keydown", this.keydown.bind(this), { capture: false, passive: false });
@@ -50,6 +49,9 @@ namespace Views.Collection
             this.filter();
 
             this.listElement.showFiles(this.filteredFiles);
+
+            const showfilesEvent = new CustomEvent("showfiles", { bubbles: true, detail: {} });
+            this.dispatchEvent(showfilesEvent);
         }
 
         private filter()
@@ -60,24 +62,21 @@ namespace Views.Collection
             {
                 this.filteredFiles = [];
                 for (const file of this.files)
-                    if (this.queryTags.every(t => file.tags.includes(t)))
+                    if (this.queryTags.every(t => t.startsWith("!") ? !file.tags.includes(t.substring(1)) : file.tags.includes(t)))
                         this.filteredFiles.push(file);
             }
         }
 
-        private fileSelected(event: CustomEvent)
+        private fileSelectionChanged(event: CustomEvent)
         {
-            const file = event.detail.file as Data.File;
+            const files = [...this.querySelectorAll("my-file-tile.selected") as NodeListOf<Collection.FileTileElement>].map(x => x.file);
 
-            this.fileTagsElement.tags = file ? file.tags : [];
-        }
+            const tags = files.mapMany(x => x.tags).distinct();
 
-        private tagClicked(event: UI.Elements.TagClickedEvent)
-        {
-            this.searchElement.toggleTag(event.tag);
+            this.fileTagsElement.tags = tags;
 
-            event.stopPropagation(); // stop handling in main
-            event.preventDefault();
+            const tagschangedEvent = new CustomEvent("tagschanged", { bubbles: true, detail: { tags: this.fileTagsElement.tags } });
+            this.dispatchEvent(tagschangedEvent);
         }
 
         private keyup(event: KeyboardEvent)

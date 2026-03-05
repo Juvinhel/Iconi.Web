@@ -49,6 +49,9 @@ namespace Views.Collection
             this.listElement.append(...this.files.skip((this.pagingElement.current - 1) * this.pageSize).take(this.pageSize).map(x => new FileTileElement(x)));
 
             this.listElement.scrollTo({ top: 0, behavior: "instant" });
+
+            const fileselectionchangedEvent = new CustomEvent("fileselectionchanged", { bubbles: true, detail: {} });
+            this.dispatchEvent(fileselectionchangedEvent);
         }
     }
 

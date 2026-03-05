@@ -194,8 +194,8 @@
                 "Gen Version",
                 "Gen BuildDate",
                 "Build ServiceWorker",
-                //"Create Test Data",
-                //"Copy Test Data"
+                "Create Test Data",
+                "Copy Test Data"
             ],
             "group": {
                 "kind": "build",

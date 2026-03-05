@@ -2,36 +2,40 @@ namespace Views
 {
     export function Main()
     {
-        return <pane-container class="container" onfolderselected={ folderSelectionChanged } ontagclicked={ tagClicked } onfileselected={ fileSelectionChanged } onselectfolder={ selectFolder }>
+        return <pane-container class="container"
+            onfolderselectionchanged={ folderSelectionChanged }
+            onfileselectionchanged={ fileSelectionChanged }
+            ontagclicked={ tagClicked }
+            onselectfolder={ selectFolder }
+            onquerychanged={ queryChanged }
+            ontagschanged={ tagsChanged }>
             <div><Library.LibraryElement /></div>
             <div><Collection.CollectionElement /></div>
             <div><Info.InfoElement /></div>
         </pane-container>;
     }
 
-    function folderSelectionChanged(event: Event)
+    function folderSelectionChanged(this: HTMLElement, event: Event)
     {
-        const sender = event.currentTarget as HTMLElement;
-        const folders = [...sender.querySelectorAll("my-folder.selected") as NodeListOf<Library.FolderElement>].map(x => x.folder);
+        let folders = [...this.querySelectorAll("my-folder.selected") as NodeListOf<Library.FolderElement>].map(x => x.folder);
+        if (folders.length == 0) folders = [...this.querySelectorAll("my-folder") as NodeListOf<Library.FolderElement>].map(x => x.folder);
         const files = Array.from(new Set(folders.mapMany(folder => [...Data.findFiles(folder)])));
 
-        const collectionElement = sender.querySelector("my-collection") as Collection.CollectionElement;
+        const collectionElement = this.querySelector("my-collection") as Collection.CollectionElement;
         collectionElement.showFiles(files);
     }
 
-    function fileSelectionChanged(event: Event)
+    function fileSelectionChanged(this: HTMLElement, event: Event)
     {
-        const sender = event.currentTarget as HTMLElement;
-        const files = [...sender.querySelectorAll("my-file-tile.selected") as NodeListOf<Collection.FileTileElement>].map(x => x.file);
+        const files = [...this.querySelectorAll("my-file-tile.selected") as NodeListOf<Collection.FileTileElement>].map(x => x.file);
 
-        const infoElement = sender.querySelector("my-info") as Info.InfoElement;
+        const infoElement = this.querySelector("my-info") as Info.InfoElement;
         infoElement.showFiles(files);
     }
 
-    function tagClicked(event: UI.Elements.TagClickedEvent)
+    function tagClicked(this: HTMLElement, event: UI.Elements.TagClickedEvent)
     {
-        const main = event.currentTarget as HTMLElement;
-        const searchElement = main.querySelector("my-search") as Collection.SearchElement;
+        const searchElement = this.querySelector("my-search") as Collection.SearchElement;
         searchElement.toggleTag(event.tag);
     }
 
@@ -54,5 +58,35 @@ namespace Views
                 folderElement.selected = true;
                 return;
             }
+
+        const folderselectionchangedEvent = new CustomEvent("folderselectionchanged", { bubbles: true, detail: {} });
+        this.dispatchEvent(folderselectionchangedEvent);
+    }
+
+    function queryChanged(this: HTMLElement, event: CustomEvent)
+    {
+        const query: string[] = event.detail.query;
+        highlightTags.bind(this)(query);
+    }
+
+    function tagsChanged(this: HTMLElement, event: CustomEvent)
+    {
+        const searchElement = this.querySelector("my-search") as Collection.SearchElement;
+        highlightTags.bind(this)(searchElement.query);
+    }
+
+    function highlightTags(query: string[])
+    {
+        for (const tagList of this.querySelectorAll("tag-list") as NodeListOf<HTMLTagList>)
+        {
+            for (const tagElement of tagList.shadowRoot.querySelectorAll("span") as NodeListOf<HTMLSpanElement>)
+            {
+                const tag = tagElement.title;
+                const state = query.includes(tag) ? "checked" : query.includes("!" + tag) ? "negate" : null;
+                tagElement.classList.remove("checked", "negate");
+                if (state == "checked") tagElement.classList.toggle("checked", true);
+                if (state == "negate") tagElement.classList.toggle("negate", true);
+            }
+        }
     }
 }

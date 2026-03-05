@@ -1,9 +1,6 @@
 class App
 {
-    public static async Start(args?: {
-        library?: boolean,
-        workbench?: boolean;
-    })
+    public static async Start()
     {
         [this.config] = await Promise.all([Data.loadConfig()]);
 

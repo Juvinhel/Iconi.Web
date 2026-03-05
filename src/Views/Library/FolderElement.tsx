@@ -43,7 +43,7 @@ namespace Views.Library
         {
             this.classList.toggle("selected", value);
 
-            const selectedEvent = new CustomEvent("folderselected", { bubbles: true, detail: { folder: value ? this.folder : null } });
+            const selectedEvent = new CustomEvent("folderselected", { bubbles: true, detail: { folder: this.folder, selected: value } });
             this.dispatchEvent(selectedEvent);
         }
 
@@ -93,6 +93,9 @@ namespace Views.Library
             }
 
             this.selected = !this.selected;
+
+            const folderselectionchangedEvent = new CustomEvent("folderselectionchanged", { bubbles: true, detail: {} });
+            this.dispatchEvent(folderselectionchangedEvent);
         }
 
         private titleDblClick()

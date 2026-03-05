@@ -8,7 +8,7 @@ namespace Views.Library
 
             this.append(...this.build());
 
-            this.addEventListener("folderselected", this.folderSelected.bind(this));
+            this.addEventListener("folderselectionchanged", this.folderSelectionChanged.bind(this));
         }
 
         private foldersElement: HTMLDivElement;
@@ -36,13 +36,23 @@ namespace Views.Library
             loadFolders(this.foldersElement, this.library.folders);
 
             const folderElement = this.foldersElement.querySelector("my-folder") as FolderElement;
-            if (folderElement) folderElement.selected = true;
+            if (folderElement)
+            {
+                folderElement.selected = true;
+
+                const folderselectionchangedEvent = new CustomEvent("folderselectionchanged", { bubbles: true, detail: {} });
+                this.dispatchEvent(folderselectionchangedEvent);
+            }
         }
 
-        private folderSelected(event: CustomEvent)
+        private folderSelectionChanged(event: CustomEvent)
         {
-            const folder = event.detail.folder as Data.Folder;
-            this.folderTagsElement.tags = folder ? folder.tags : [];
+            const folders = [...this.querySelectorAll("my-folder.selected") as NodeListOf<FolderElement>].map(x => x.folder);
+
+            this.folderTagsElement.tags = folders.mapMany(x => x.tags).distinct();
+
+            const tagschangedEvent = new CustomEvent("tagschanged", { bubbles: true, detail: { tags: this.folderTagsElement.tags } });
+            this.dispatchEvent(tagschangedEvent);
         }
     }
 

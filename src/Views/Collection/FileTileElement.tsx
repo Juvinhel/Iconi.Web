@@ -30,7 +30,7 @@ namespace Views.Collection
         {
             this.classList.toggle("selected", value);
 
-            const selectedEvent = new CustomEvent("fileselected", { bubbles: true, detail: { file: value ? this.file : null } });
+            const selectedEvent = new CustomEvent("fileselected", { bubbles: true, detail: { file: this.file, selected: value } });
             this.dispatchEvent(selectedEvent);
         }
 
@@ -45,6 +45,9 @@ namespace Views.Collection
             }
 
             this.selected = !this.selected;
+
+            const fileselectionchangedEvent = new CustomEvent("fileselectionchanged", { bubbles: true, detail: {} });
+            this.dispatchEvent(fileselectionchangedEvent);
         }
     }
 
