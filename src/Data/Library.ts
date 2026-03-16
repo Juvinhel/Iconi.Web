@@ -164,7 +164,7 @@ namespace Data
                 parent.folders.push(folder);
             }
 
-            if (remaining.contains("/") && (this.maxDepth == 0 || depth < this.maxDepth))
+            if (remaining?.contains("/") && (this.maxDepth == 0 || depth < this.maxDepth))
                 return this.getOrCreateFolder(folder, remaining, depth + 1);
             return folder;
         }
