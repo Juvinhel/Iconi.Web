@@ -2,92 +2,172 @@ namespace Data
 {
     export async function loadLibrary(config?: LibraryConfig): Promise<Library>
     {
-        let url = config?.url ?? "library";
-        if (!(url.startsWith("http://") || url.startsWith("https://")))
-            url = new URL(url, location.toString()).toString();
-        const folderExclusions = config?.["folder-exclusions"] ?? [];
-        const tagExclusions = config?.["tag-exclusions"] ?? [];
+        const builder = new LibraryBuilder(config);
+        return await builder.run();
+    }
 
-        const library: Library = { url, folderExclusions, tagExclusions, folders: [] };
-        const progressDialog = await UI.Dialog.progress({ title: "Building Library", displayType: "Absolute", max: 0, value: 0 });
+    export type Library = {
+        url: string;
+        folders: Folder[];
+    };
 
-        try
+    export type Folder = {
+        parent: Folder;
+        name: string;
+        folders: Folder[];
+        files: File[];
+    };
+
+    export type File = {
+        parent: Folder;
+        url: string;
+        name: string;
+        extension: string;
+        tags: string[];
+    };
+
+    export class LibraryBuilder
+    {
+        constructor (config?: LibraryConfig)
+        {
+            this.url = config?.url ?? "library";
+            if (!(this.url.startsWith("http://") || this.url.startsWith("https://")))
+                this.url = new URL(this.url, location.toString()).toString();
+            this.folderExclusions = config?.["folder-exclusions"] ?? [];
+            this.tagExclusions = config?.["tag-exclusions"] ?? [];
+            this.maxDepth = config?.["max-depth"] ?? 2;
+        }
+
+        public url: string;
+        public folderExclusions: (string | RegExp)[];
+        public tagExclusions: (string | RegExp)[];
+        public maxDepth: number;
+
+        private library: Library;
+        private progressDialog: UI.Elements.ProgressDialog;
+
+        public async run(): Promise<Library>
+        {
+            this.library = { url: this.url, folders: [] };
+            this.progressDialog = await UI.Dialog.progress({ title: "Building Library", displayType: "Absolute", max: 0, value: 0 });
+
+            try
+            {
+                //const response = await fetch(this.url + "/library.json");
+                //if (response.ok)
+                //{
+                //    await this.loadFromJSON(await response.text());
+                //}
+                //else
+                {
+                    const list = await this.getFileList();
+                    await this.loadFromFileList(list);
+                }
+            }
+            catch (error)
+            {
+                console.error(error);
+            }
+
+            this.progressDialog.close();
+            return this.library;
+        }
+
+        private async loadFromJSON(text: string)
+        {
+            const folders: Folder[] = JSON.parse(text);
+
+            for (const folder of folders)
+                this.setParents(folder);
+
+            this.library.folders.push(...folders);
+        }
+
+        private setParents(folder: Folder)
+        {
+            folder.files ??= [];
+            for (const file of folder.files)
+                file.parent = folder;
+
+            folder.folders ??= [];
+            for (const subFolder of folder.folders)
+            {
+                subFolder.parent = folder;
+                this.setParents(subFolder);
+            }
+        }
+
+        private async getFileList(): Promise<string[]>
         {
             let list: string[];
-            const response = await fetch(library.url + "/listing.txt");
+            const response = await fetch(this.url + "/listing.txt");
             if (response.ok)
             {
                 const text = await response.text();
                 list = text.replaceAll(/(?:\r\n|\r|\n)/, "\n").split("\n").filter(p => p && p.trimChar("/").includes("/"));
-                progressDialog.max = list.length;
+                this.progressDialog.max = list.length;
             }
             else
             {
                 list = [];
-                for await (const file of crawlDirectoryListing(url))
+                for await (const file of crawlDirectoryListing(this.url))
                 {
                     list.push(file);
-                    progressDialog.max = list.length;
+                    this.progressDialog.max = list.length;
                 }
             }
+            return list;
+        }
 
-            list = list.map(p => new URL(p, library.url).toString());
+        private async loadFromFileList(list: string[])
+        {
+            list = list.map(p => new URL(p, this.url).toString());
             let i = 0;
             const updateInterval = calculateUpdateInterval(list.length);
             for (const file of list)
             {
-                insertFile(library, file);
+                this.insertFile(file);
                 ++i;
                 if (i % updateInterval == 0)
                 {
-                    progressDialog.value = i;
+                    this.progressDialog.value = i;
                     await delay(0); // allow ui upates
                 }
             }
-            progressDialog.value = i;
-        }
-        catch (error)
-        {
-            console.error(error);
+            this.progressDialog.value = i;
         }
 
-        progressDialog.close();
-        return library;
-    }
-
-    function insertFile(library: Library, url: string)
-    {
-        const filePath = decodeURI(url.substring(library.url.length).trimChar("/"));
-        if (!filePath.includes("/")) return; // Files in root folder are ignored.
-
-        let [remainingPath, fileName] = filePath.splitLast("/");
-        const [name, extension] = fileName.splitLast(".");
-        if (extension.toLowerCase() != "svg") return;
-        const file: File = { parent: null, name, extension, url, tags: parseTags(remainingPath + "/" + name, library.tagExclusions), };
-
-        let current: Folder | null = null;
-        do
+        private insertFile(url: string)
         {
-            let folderName;
-            [folderName, remainingPath] = remainingPath.splitFirst("/");
+            const filePath = decodeURI(url.substring(this.url.length).trimChar("/"));
+            if (!filePath.includes("/")) return; // Files in root folder are ignored.
 
-            if (checkExlusions(folderName, library.folderExclusions)) continue;
-            current = getOrCreateFolder(library, current, folderName);
-            current.files.push(file);
-        } while (remainingPath);
-    }
+            let [path, fileName] = filePath.splitLast("/");
+            const [name, extension] = fileName.splitLast(".");
+            if (extension.toLowerCase() != "svg") return;
+            const file: File = { parent: null, name, extension, url, tags: parseTags(path + "/" + name, this.tagExclusions), };
 
-    function getOrCreateFolder(library: Library, parent: Folder | null, folderName: string): Folder 
-    {
-        const folders = parent?.folders ?? library.folders;
-        let folder: Folder = folders.find(f => String.localeCompare(f.name, folderName) == 0); // localCompare needed because String and string are not equal
-        if (!folder)
-        {
-            folder = { parent, name: folderName, folders: [], files: [], tags: parseTags(folderName, library.tagExclusions) };
-            if (parent) folder.tags.unshift(...parent.tags);
-            folders.push(folder);
+            const folder: Folder = this.getOrCreateFolder(this.library, path, 1);
+            folder.files.push(file);
         }
-        return folder;
+
+        private getOrCreateFolder(parent: Folder | Library, path: string, depth: number): Folder
+        {
+            let [current, remaining] = path.splitFirst("/");
+            while (current && checkExlusions(current, this.folderExclusions)) [current, remaining] = remaining?.splitFirst("/") ?? [null, null];
+            if (!current) return parent as Folder;
+
+            let folder: Folder = parent.folders.first(x => x.name == current);
+            if (!folder)
+            {
+                folder = { name: current, folders: [], files: [], parent: "name" in parent ? parent : null };
+                parent.folders.push(folder);
+            }
+
+            if (remaining.contains("/") && (this.maxDepth == 0 || depth < this.maxDepth))
+                return this.getOrCreateFolder(folder, remaining, depth + 1);
+            return folder;
+        }
     }
 
     function parseTags(_text: string, exclusions: (string | RegExp)[]): string[]
@@ -137,27 +217,4 @@ namespace Data
             for (const file of findFiles(subfolder))
                 yield file;
     }
-
-    export type Library = {
-        url: string;
-        folderExclusions: (string | RegExp)[];
-        tagExclusions: (string | RegExp)[];
-        folders: Folder[];
-    };
-
-    export type Folder = {
-        parent: Folder;
-        name: string;
-        folders: Folder[];
-        files: File[];
-        tags: string[];
-    };
-
-    export type File = {
-        parent: Folder;
-        url: string;
-        name: string;
-        extension: string;
-        tags: string[];
-    };
 }

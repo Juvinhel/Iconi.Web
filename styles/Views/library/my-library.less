@@ -3,7 +3,7 @@ my-library
     display: grid;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr;
-    grid-template-areas: "title" "folders" "footer";
+    grid-template-areas: "title" "folders";
     height: 100%;
     gap: 0.25em;
 
@@ -38,16 +38,5 @@ my-library
             padding: 0.25em;
             overflow: hidden;
         }
-    }
-
-    > .footer
-    {
-        grid-area: footer;
-        width: auto; // fixes padding
-        height: max-content;
-        min-height: 1em;
-        padding: 0.25em;
-        border-radius: 0.125em;
-        background: var(--background-color);
     }
 }

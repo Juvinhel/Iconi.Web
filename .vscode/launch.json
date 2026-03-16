@@ -8,7 +8,7 @@
             "name": "Debug Chrome",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost:5414",
+            "url": "http://localhost:5424",
             "webRoot": "${workspaceFolder}\\dist",
         },
         {
@@ -16,7 +16,7 @@
             "type": "firefox",
             "request": "launch",
             "reAttach": true,
-            "url": "http://localhost:5414",
+            "url": "http://localhost:5424",
             "webRoot": "${workspaceFolder}\\dist"
         }
     ]

@@ -56,7 +56,8 @@ namespace Views
                 const parentFolderElement = folderElement.closest("my-folder") as Library.FolderElement;
                 parentFolderElement.expanded = true;
                 folderElement.selected = true;
-                return;
+                folderElement.scrollIntoView({ block: "center", behavior: "smooth" });
+                break;
             }
 
         const folderselectionchangedEvent = new CustomEvent("folderselectionchanged", { bubbles: true, detail: {} });

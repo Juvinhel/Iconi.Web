@@ -28,7 +28,7 @@ namespace Views.Library
                 <div class="header">
                     <a class="expander" onclick={ this.expanderClick } />
                     <span class="title" title={ this.folder.name } onclick={ this.titleXORClick }>{ this.folder.name }</span>
-                    <span class="file-count" title={ this.folder.files.length + " files" }>{ this.folder.files.length }</span>
+                    <span class="file-count" title={ this.folder.files.length + " files" }>{ this.folder.files.length == 0 ? "" : this.folder.files.length }</span>
                 </div>,
                 this.subfoldersElement = <div class="subfolders">
                     { this.folder.folders.map(f => new FolderElement(f)) }

@@ -10,6 +10,7 @@ namespace Data
         "url"?: string;
         "folder-exclusions"?: (string | RegExp)[];
         "tag-exclusions"?: (string | RegExp)[];
+        "max-depth"?: number;
     };
 
     const defaultConfig: Config = {
@@ -17,6 +18,7 @@ namespace Data
             "url": "library",
             "folder-exclusions": ["svg"],
             "tag-exclusions": [/^[0-9]{5,}$/],
+            "max-depth": 2,
         }
     };
 

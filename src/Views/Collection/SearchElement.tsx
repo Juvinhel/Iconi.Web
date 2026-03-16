@@ -14,7 +14,7 @@ namespace Views.Collection
         private build()
         {
             return [
-                this.textInputElement = <input class="search-text" onkeyup={ this.textKeyUp.bind(this) } onblur={ this.textBlur.bind(this) } onkeypress={ this.doInput.bind("this") } onpaste={ this.doInput.bind(this) } oninput={ this.doInput.bind(this) } /> as HTMLInputElement,
+                this.textInputElement = <input class="search-text" onkeyup={ this.textKeyUp.bind(this) } onblur={ this.textBlur.bind(this) } onkeypress={ this.doInput.bind(this) } onpaste={ this.doInput.bind(this) } oninput={ this.doInput.bind(this) } /> as HTMLInputElement,
                 <button class="search-clear-button" type="text" onclick={ this.clear.bind(this) }><color-icon src="img/icons/close.svg" /></button>,
                 <button class="search-go-button" type="text" onclick={ this.goClick.bind(this) }><color-icon src="img/icons/search.svg" /></button>,
             ];
