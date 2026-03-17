@@ -21,11 +21,11 @@ namespace Views.Library
             ];
         }
 
-        public library: Data.Library;
+        public library: Data.Library.Library;
 
         async connectedCallback()
         {
-            this.library = await Data.loadLibrary(App.config.library);
+            this.library = await Data.Library.loadLibrary(App.config.library);
 
             loadFolders(this.foldersElement, this.library.folders);
 

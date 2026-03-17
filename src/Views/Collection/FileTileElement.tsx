@@ -2,7 +2,7 @@ namespace Views.Collection
 {
     export class FileTileElement extends HTMLElement
     {
-        constructor (file: Data.File)
+        constructor (file: Data.Library.File)
         {
             super();
 
@@ -23,7 +23,7 @@ namespace Views.Collection
             ];
         }
 
-        public file: Data.File;
+        public file: Data.Library.File;
 
         public get selected() { return this.classList.contains("selected"); }
         public set selected(value: boolean)

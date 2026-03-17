@@ -1,34 +1,14 @@
-namespace Data
+namespace Data.Library
 {
-    export async function loadLibrary(config?: LibraryConfig): Promise<Library>
+    export async function loadLibrary(config?: Config): Promise<Library>
     {
-        const builder = new LibraryBuilder(config);
+        const builder = new Builder(config);
         return await builder.run();
     }
 
-    export type Library = {
-        url: string;
-        folders: Folder[];
-    };
-
-    export type Folder = {
-        parent: Folder;
-        name: string;
-        folders: Folder[];
-        files: File[];
-    };
-
-    export type File = {
-        parent: Folder;
-        url: string;
-        name: string;
-        extension: string;
-        tags: string[];
-    };
-
-    export class LibraryBuilder
+    export class Builder
     {
-        constructor (config?: LibraryConfig)
+        constructor (config?: Config)
         {
             this.url = config?.url ?? "library";
             if (!(this.url.startsWith("http://") || this.url.startsWith("https://")))
@@ -145,39 +125,55 @@ namespace Data
             let [path, fileName] = filePath.splitLast("/");
             const [name, extension] = fileName.splitLast(".");
             if (extension.toLowerCase() != "svg") return;
-            const file: File = { parent: null, name, extension, url, tags: parseTags(path + "/" + name, this.tagExclusions), };
+            const file: File = { parent: null, name, extension, url, tags: this.parseTags(path + "/" + name + "-" + extension), };
 
-            const folder: Folder = this.getOrCreateFolder(this.library, path, 1);
+            const folder: Folder = this.getOrCreateFolder(this.library, this.removePathExclusions(path), 0);
             folder.files.push(file);
+        }
+
+        private removePathExclusions(path: string): string
+        {
+            let ret = "";
+            for (const part of path.split("/"))
+                if (!checkExlusions(part, this.folderExclusions))
+                    ret += (ret.length > 0 ? "/" : "") + part;
+            return ret;
         }
 
         private getOrCreateFolder(parent: Folder | Library, path: string, depth: number): Folder
         {
-            let [current, remaining] = path.splitFirst("/");
-            while (current && checkExlusions(current, this.folderExclusions)) [current, remaining] = remaining?.splitFirst("/") ?? [null, null];
-            if (!current) return parent as Folder;
+            let current: string;
+            let remaining: string;
 
-            let folder: Folder = parent.folders.first(x => x.name == current);
+            if (this.maxDepth != 0 && depth >= this.maxDepth)
+            {
+                current = path;
+                remaining = null;
+            }
+            else
+                [current, remaining] = path.splitFirst("/");
+
+            let folder: Folder = parent.folders.first(x => String.localeCompare(x.name, current) == 0);
             if (!folder)
             {
                 folder = { name: current, folders: [], files: [], parent: "name" in parent ? parent : null };
                 parent.folders.push(folder);
             }
 
-            if (remaining?.contains("/") && (this.maxDepth == 0 || depth < this.maxDepth))
+            if (remaining?.contains("/"))
                 return this.getOrCreateFolder(folder, remaining, depth + 1);
             return folder;
         }
-    }
 
-    function parseTags(_text: string, exclusions: (string | RegExp)[]): string[]
-    {
-        if (!_text) return [];
+        private parseTags(text: string): string[]
+        {
+            if (!text) return [];
 
-        return Array.from(new Set( // new Set => distinct items
-            _text.split(/[-\/]/)
-                .map(x => refineTag(x))
-                .filter(x => !checkExlusions(x, exclusions))));
+            return Array.from(new Set( // new Set => distinct items
+                text.split(/[-\/]/)
+                    .map(x => refineTag(x))
+                    .filter(x => !checkExlusions(x, this.tagExclusions))));
+        }
     }
 
     function refineTag(_tag: string): string
@@ -204,17 +200,5 @@ namespace Data
                     break;
             }
         return false;
-    }
-
-    export function* findFiles(folder: Folder): IterableIterator<File>
-    {
-        for (const file of folder.files)
-        {
-            file.parent = folder;
-            yield file;
-        }
-        for (const subfolder of folder.folders)
-            for (const file of findFiles(subfolder))
-                yield file;
     }
 }

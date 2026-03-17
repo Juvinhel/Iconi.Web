@@ -2,16 +2,8 @@ namespace Data
 {
     export interface Config
     {
-        "library"?: LibraryConfig;
+        "library"?: Library.Config;
     }
-
-    export interface LibraryConfig
-    {
-        "url"?: string;
-        "folder-exclusions"?: (string | RegExp)[];
-        "tag-exclusions"?: (string | RegExp)[];
-        "max-depth"?: number;
-    };
 
     const defaultConfig: Config = {
         "library": {

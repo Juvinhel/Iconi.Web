@@ -26,10 +26,10 @@ namespace Views.Collection
             ];
         }
 
-        public files: Data.File[];
+        public files: Data.Library.File[];
         public pageSize = 50;
 
-        public showFiles(files: Data.File[])
+        public showFiles(files: Data.Library.File[])
         {
             this.files = files;
 

@@ -172,7 +172,7 @@
             "command": "Copy-Item",
             "type": "shell",
             "args": [
-                "D:\\Test2\\*",
+                "D:\\Test3\\*",
                 "-Destination",
                 "dist/library",
                 "-Recurse",

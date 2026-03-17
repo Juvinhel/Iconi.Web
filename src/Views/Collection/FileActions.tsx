@@ -51,7 +51,7 @@ namespace Views.Collection
         event.preventDefault();
     }
 
-    export async function downloadFiles(files: Data.File[])
+    export async function downloadFiles(files: Data.Library.File[])
     {
         if (files.length == 1)
         {
@@ -62,8 +62,8 @@ namespace Views.Collection
             UI.Dialog.download({ title: "Download Files", files, zipName: "icons.zip", allowClose: true });
     }
 
-    export const openInInkscape: ((files: Data.File[]) => Promise<void>) | null = Data.Bridge ?
-        async function (files: Data.File[])
+    export const openInInkscape: ((files: Data.Library.File[]) => Promise<void>) | null = Data.Bridge ?
+        async function (files: Data.Library.File[])
         {
             const progressDialog = files.length > 1 ? await UI.Dialog.progress({ title: "Opening Files in InkScape", displayType: "Percent", max: files.length, value: 0 }) : null;
             try
@@ -97,8 +97,8 @@ namespace Views.Collection
             }
         } : null;
 
-    export const copySVGsToClipboard: ((files: Data.File[]) => Promise<void>) | null = ("supports" in window.ClipboardItem) && window.ClipboardItem.supports("image/svg+xml") ?
-        async function (files: Data.File[])
+    export const copySVGsToClipboard: ((files: Data.Library.File[]) => Promise<void>) | null = ("supports" in window.ClipboardItem) && window.ClipboardItem.supports("image/svg+xml") ?
+        async function (files: Data.Library.File[])
         {
             try
             {
@@ -117,8 +117,8 @@ namespace Views.Collection
             }
         } : null;
 
-    export const copyFilesToClipboard: ((files: Data.File[]) => Promise<void>) | null = Data.Bridge ?
-        async function (files: Data.File[])
+    export const copyFilesToClipboard: ((files: Data.Library.File[]) => Promise<void>) | null = Data.Bridge ?
+        async function (files: Data.Library.File[])
         {
             const progressDialog = files.length > 1 ? await UI.Dialog.progress({ title: "Copy files to clipboard", displayType: "Percent", max: files.length, value: 0 }) : null;
             try

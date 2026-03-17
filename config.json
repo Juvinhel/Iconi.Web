@@ -7,6 +7,6 @@
         "tag-exclusions": [
             "/^[0-9]{5,}$/"
         ],
-        "max-depth": 2,
+        "max-depth": 2
     }
 }

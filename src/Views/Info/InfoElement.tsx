@@ -22,22 +22,22 @@ namespace Views.Info
                 </div>,
                 <div />,
                 <div class="actions">
-                    <button onclick={ () => { Collection.downloadFiles(this.files); } }>Download</button>
-                    { Collection.openInInkscape ? <button onclick={ () => { Collection.openInInkscape(this.files); } }>Open Files in InkScape</button> : null }
-                    { Collection.copySVGsToClipboard ? <button onclick={ () => { Collection.copySVGsToClipboard(this.files); } }>Copy Images to Clipboard</button> : null }
-                    { Collection.copyFilesToClipboard ? <button onclick={ () => { Collection.copyFilesToClipboard(this.files); } }>Copy Files to Clipboard</button> : null }
+                    <button onclick={ () => { Collection.downloadFiles([this.file]); } }>Download</button>
+                    { Collection.openInInkscape ? <button onclick={ () => { Collection.openInInkscape([this.file]); } }>Open Files in InkScape</button> : null }
+                    { Collection.copySVGsToClipboard ? <button onclick={ () => { Collection.copySVGsToClipboard([this.file]); } }>Copy Images to Clipboard</button> : null }
+                    { Collection.copyFilesToClipboard ? <button onclick={ () => { Collection.copyFilesToClipboard([this.file]); } }>Copy Files to Clipboard</button> : null }
                 </div>
             ];
         }
 
-        public files: Data.File[];
+        public file: Data.Library.File;
 
-        public showFiles(files: Data.File[])
+        public showFile(file: Data.Library.File)
         {
-            this.files = files;
+            this.file = file;
 
-            this.fileElement.textContent = this.files.length == 0 ? "" : (this.files.length == 1 ? this.files[0].name : "multiple files");
-            this.previewImageElement.src = files[0]?.url;
+            this.fileElement.textContent = this.file?.name ?? "";
+            this.previewImageElement.src = this.file?.url ?? "";
         }
     }
 

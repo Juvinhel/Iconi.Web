@@ -5,6 +5,7 @@ namespace Views
         return <pane-container class="container"
             onfolderselectionchanged={ folderSelectionChanged }
             onfileselectionchanged={ fileSelectionChanged }
+            onfileselected={ fileSelected }
             ontagclicked={ tagClicked }
             onselectfolder={ selectFolder }
             onquerychanged={ queryChanged }
@@ -19,7 +20,7 @@ namespace Views
     {
         let folders = [...this.querySelectorAll("my-folder.selected") as NodeListOf<Library.FolderElement>].map(x => x.folder);
         if (folders.length == 0) folders = [...this.querySelectorAll("my-folder") as NodeListOf<Library.FolderElement>].map(x => x.folder);
-        const files = Array.from(new Set(folders.mapMany(folder => [...Data.findFiles(folder)])));
+        const files = Array.from(new Set(folders.mapMany(folder => [...Data.Library.findFiles(folder)])));
 
         const collectionElement = this.querySelector("my-collection") as Collection.CollectionElement;
         collectionElement.showFiles(files);
@@ -27,10 +28,18 @@ namespace Views
 
     function fileSelectionChanged(this: HTMLElement, event: Event)
     {
-        const files = [...this.querySelectorAll("my-file-tile.selected") as NodeListOf<Collection.FileTileElement>].map(x => x.file);
+    }
+
+    function fileSelected(this: HTMLElement, event: CustomEvent)
+    {
+        const file: Data.Library.File = event.detail.file;
+        const selected: boolean = event.detail.selected;
 
         const infoElement = this.querySelector("my-info") as Info.InfoElement;
-        infoElement.showFiles(files);
+        if (selected)
+            infoElement.showFile(file);
+        else if (infoElement.file == file)
+            infoElement.showFile(null);
     }
 
     function tagClicked(this: HTMLElement, event: UI.Elements.TagClickedEvent)
@@ -41,7 +50,7 @@ namespace Views
 
     function selectFolder(this: HTMLElement, event: CustomEvent)
     {
-        const folder = event.detail.folder as Data.Folder;
+        const folder = event.detail.folder as Data.Library.Folder;
 
         if (!App.multiselect)
         {

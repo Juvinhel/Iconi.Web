@@ -31,12 +31,12 @@ namespace Views.Collection
             ];
         }
 
-        public files: Data.File[];
-        public filteredFiles: Data.File[];
+        public files: Data.Library.File[];
+        public filteredFiles: Data.Library.File[];
         public queryTags: string[] = [];
         public pageSize = 50;
 
-        public showFiles(files: Data.File[])
+        public showFiles(files: Data.Library.File[])
         {
             this.files = files;
 

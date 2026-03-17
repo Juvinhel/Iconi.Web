@@ -1,6 +1,6 @@
 namespace Views.Library
 {
-    export function loadFolders(container: HTMLElement, folders: Data.Folder[])
+    export function loadFolders(container: HTMLElement, folders: Data.Library.Folder[])
     {
         for (const folder of folders)
             container.append(new FolderElement(folder));
@@ -8,7 +8,7 @@ namespace Views.Library
 
     export class FolderElement extends HTMLElement
     {
-        constructor (folder: Data.Folder)
+        constructor (folder: Data.Library.Folder)
         {
             super();
 
@@ -36,7 +36,7 @@ namespace Views.Library
             ];
         }
 
-        public folder: Data.Folder;
+        public folder: Data.Library.Folder;
 
         public get selected() { return this.classList.contains("selected"); }
         public set selected(value: boolean)
