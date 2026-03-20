@@ -33,12 +33,12 @@ namespace Data.Library
 
             try
             {
-                //const response = await fetch(this.url + "/library.json");
-                //if (response.ok)
-                //{
-                //    await this.loadFromJSON(await response.text());
-                //}
-                //else
+                const response = await fetch(this.url + "/library.json");
+                if (response.ok)
+                {
+                    await this.loadFromJSON(await response.text());
+                }
+                else
                 {
                     const list = await this.getFileList();
                     await this.loadFromFileList(list);
@@ -55,10 +55,17 @@ namespace Data.Library
 
         private async loadFromJSON(text: string)
         {
+            const start = Date.now();
             const folders: Folder[] = JSON.parse(text);
+            const end = Date.now();
+            const elapsed = end - start;
+            console.log("parsed: ", elapsed / 1000);
 
             for (const folder of folders)
                 this.setParents(folder);
+            const end2 = Date.now();
+            const elapsed2 = end2 - end;
+            console.log("setParents: ", elapsed2 / 1000);
 
             this.library.folders.push(...folders);
         }
