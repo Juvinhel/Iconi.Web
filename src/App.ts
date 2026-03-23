@@ -2,7 +2,7 @@ class App
 {
     public static async Start()
     {
-        [this.config] = await Promise.all([Data.loadConfig()]);
+        this.config = await ConfigHelper.load("config.json", Data.defaultConfig);
 
         UI.LazyLoad.ErrorImageUrl = "img/icons/not-found.png";
         UI.LazyLoad.LoadingImageUrl = "img/icons/spinner.svg";

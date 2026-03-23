@@ -13,9 +13,9 @@ namespace Data.Library
             this.url = config?.url ?? "library";
             if (!(this.url.startsWith("http://") || this.url.startsWith("https://")))
                 this.url = new URL(this.url, location.toString()).toString();
-            this.folderExclusions = config?.["folder-exclusions"] ?? [];
-            this.tagExclusions = config?.["tag-exclusions"] ?? [];
-            this.maxDepth = config?.["max-depth"] ?? 2;
+            this.folderExclusions = config["folder-exclusions"] ?? [];
+            this.tagExclusions = config["tag-exclusions"] ?? [];
+            this.maxDepth = config?.["max-depth"] ?? 0;
         }
 
         public url: string;

@@ -2,10 +2,10 @@ namespace Data
 {
     export interface Config
     {
-        "library"?: Library.Config;
+        "library": Library.Config;
     }
 
-    const defaultConfig: Config = {
+    export const defaultConfig: Config = {
         "library": {
             "url": "library",
             "folder-exclusions": ["svg"],
@@ -13,26 +13,4 @@ namespace Data
             "max-depth": 2,
         }
     };
-
-    export async function loadConfig(): Promise<Config>
-    {
-        try
-        {
-            const response = await fetch("config.json");
-            const text = await response.text();
-            return JSON.parse(text, function (this: any, key: string, value: any)
-            {
-                if (Array.isArray(this) && typeof value === "string" && value.startsWith("/"))
-                {
-                    const [expression, flags] = value.substring(1).splitLast("/");
-                    return new RegExp(expression, flags);
-                }
-                return value;
-            });
-        }
-        catch
-        {
-            return defaultConfig;
-        }
-    }
 }
