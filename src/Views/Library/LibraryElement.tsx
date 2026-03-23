@@ -26,6 +26,7 @@ namespace Views.Library
         async connectedCallback()
         {
             this.library = await Data.Library.loadLibrary(App.config.library);
+            console.log("lib", this.library);
 
             loadFolders(this.foldersElement, this.library.folders);
 

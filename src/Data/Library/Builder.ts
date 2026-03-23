@@ -134,7 +134,7 @@ namespace Data.Library
             if (extension.toLowerCase() != "svg") return;
             const file: File = { parent: null, name, extension, url, tags: this.parseTags(path + "/" + name + "-" + extension), };
 
-            const folder: Folder = this.getOrCreateFolder(this.library, this.removePathExclusions(path), 0);
+            const folder: Folder = this.getOrCreateFolder(this.library, this.removePathExclusions(path), 1);
             folder.files.push(file);
         }
 
@@ -167,7 +167,7 @@ namespace Data.Library
                 parent.folders.push(folder);
             }
 
-            if (remaining?.contains("/"))
+            if (remaining)
                 return this.getOrCreateFolder(folder, remaining, depth + 1);
             return folder;
         }
