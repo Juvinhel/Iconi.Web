@@ -11,6 +11,7 @@ namespace Data
             "folder-exclusions": ["svg"],
             "tag-exclusions": [/^[0-9]{5,}$/],
             "max-depth": 2,
+            "common-tags": ["achrome", "monochrome", "duochrome", "polychrome", "gradients"],
         }
     };
 }

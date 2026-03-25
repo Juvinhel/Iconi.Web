@@ -47,6 +47,8 @@ namespace Views.Collection
         {
             this.queryTags = this.searchElement.query;
             this.filter();
+            console.log("query", this.queryTags);
+            console.log("files", this.filteredFiles);
 
             this.listElement.showFiles(this.filteredFiles);
 

@@ -6,5 +6,6 @@ namespace Data.Library
         "folder-exclusions"?: (string | RegExp)[];
         "tag-exclusions"?: (string | RegExp)[];
         "max-depth"?: number;
+        "common-tags"?: string[];
     };
 }

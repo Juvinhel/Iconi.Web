@@ -11,6 +11,7 @@ class App
         window.addEventListener("mousemove", (event: MouseEvent) => this.pressCTRL(event.ctrlKey), { capture: true, passive: true });
         window.addEventListener("keydown", (event: KeyboardEvent) => this.pressCTRL(event.ctrlKey), { capture: true, passive: true });
         window.addEventListener("keyup", (event: KeyboardEvent) => this.pressCTRL(event.ctrlKey), { capture: true, passive: true });
+        window.addEventListener("keydown", this.keyDown.bind(this), { capture: true, passive: true });
 
         const main = Views.Main();
         document.querySelector("main").append(main);
@@ -25,6 +26,22 @@ class App
         {
             this.ctrl = pressed;
             this.multiselect = pressed;
+        }
+    }
+
+    private static keyDown(event: KeyboardEvent)
+    {
+        let simplePaging: HTMLSimplePaging;
+        switch (event.key)
+        {
+            case "ArrowRight":
+                simplePaging = document.querySelector("simple-paging") as HTMLSimplePaging;
+                simplePaging.navigateNext();
+                break;
+            case "ArrowLeft":
+                simplePaging = document.querySelector("simple-paging") as HTMLSimplePaging;
+                simplePaging.navigatePrevious();
+                break;
         }
     }
 

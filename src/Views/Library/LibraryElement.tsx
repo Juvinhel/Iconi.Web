@@ -26,18 +26,11 @@ namespace Views.Library
         async connectedCallback()
         {
             this.library = await Data.Library.loadLibrary(App.config.library);
-            console.log("lib", this.library);
 
             loadFolders(this.foldersElement, this.library.folders);
 
-            const folderElement = this.foldersElement.querySelector("my-folder") as FolderElement;
-            if (folderElement)
-            {
-                folderElement.selected = true;
-
-                const folderselectionchangedEvent = new CustomEvent("folderselectionchanged", { bubbles: true, detail: {} });
-                this.dispatchEvent(folderselectionchangedEvent);
-            }
+            const folderselectionchangedEvent = new CustomEvent("folderselectionchanged", { bubbles: true, detail: {} });
+            this.dispatchEvent(folderselectionchangedEvent);
         }
     }
 
