@@ -8,7 +8,6 @@ namespace Views.Collection
 
             this.append(...this.build());
 
-            this.addEventListener("fileselectionchanged", this.fileSelectionChanged.bind(this));
             this.addEventListener("search", this.search.bind(this));
             this.tabIndex = -1; // allow focus for keydown
             this.addEventListener("keydown", this.keydown.bind(this), { capture: false, passive: false });
@@ -17,17 +16,13 @@ namespace Views.Collection
 
         private searchElement: SearchElement;
         private listElement: ListElement;
-        private fileTagsElement: HTMLTagList;
 
         private build()
         {
             return [
                 <h2 class="title">Collection</h2>,
                 this.searchElement = <SearchElement /> as SearchElement,
-                this.listElement = <ListElement /> as ListElement,
-                <div class="footer">
-                    { this.fileTagsElement = <tag-list class="file-tags" /> as HTMLTagList }
-                </div>
+                this.listElement = <ListElement /> as ListElement
             ];
         }
 
@@ -67,18 +62,6 @@ namespace Views.Collection
                     if (this.queryTags.every(t => t.startsWith("!") ? !file.tags.includes(t.substring(1)) : file.tags.includes(t)))
                         this.filteredFiles.push(file);
             }
-        }
-
-        private fileSelectionChanged(event: CustomEvent)
-        {
-            const files = [...this.querySelectorAll("my-file-tile.selected") as NodeListOf<Collection.FileTileElement>].map(x => x.file);
-
-            const tags = files.mapMany(x => x.tags).distinct();
-
-            this.fileTagsElement.tags = tags;
-
-            const tagschangedEvent = new CustomEvent("tagschanged", { bubbles: true, detail: { tags: this.fileTagsElement.tags } });
-            this.dispatchEvent(tagschangedEvent);
         }
 
         private keyup(event: KeyboardEvent)

@@ -18,7 +18,7 @@ namespace Views.Collection
         private build()
         {
             return [
-                <img src={ this.file.url } />,
+                <img src={ this.file.url } loading="lazy" />,
                 <color-icon class="check" src="img/icons/check.svg" />
             ];
         }

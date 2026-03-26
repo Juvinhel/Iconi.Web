@@ -9,7 +9,7 @@ my-folder
     {
         display: grid;
         grid-template-rows: 1fr;
-        grid-template-columns: 1em 1fr auto;
+        grid-template-columns: min-content 1fr auto;
         grid-template-areas: "expander title count";
         grid-area: header;
         padding: 0 0.25em;
@@ -22,7 +22,8 @@ my-folder
             grid-area: expander;
             width: 1em;
             height: 1em;
-            //background-image: url("img/icons/triangle-filled-right-disabled.svg"); 
+            background-image: url("img/icons/folder-filled.svg");
+            background-size: contain;
             cursor: pointer;
             user-select: none;
         }
@@ -32,7 +33,7 @@ my-folder
             grid-area: title;
             width: 100%;
             overflow: hidden;
-            text-overflow: clip;
+            text-overflow: ellipsis;
             white-space: nowrap;
             cursor: pointer;
             user-select: none;

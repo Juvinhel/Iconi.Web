@@ -1,73 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-
 <svg
+   width="1200pt"
+   height="1200pt"
    version="1.1"
-   id="Layer_1"
-   x="0px"
-   y="0px"
-   viewBox="0 0 386.257 386.257"
-   style="enable-background:new 0 0 386.257 386.257;"
-   xml:space="preserve"
-   sodipodi:docname="tringle-filled-down.svg"
+   viewBox="0 0 1200 1200"
+   id="svg1"
+   sodipodi:docname="triangle-filled-down.svg"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
-   id="defs15"><inkscape:path-effect
-     effect="fillet_chamfer"
-     id="path-effect15"
-     is_visible="true"
-     lpeversion="1"
-     nodesatellites_param="F,0,0,1,0,5,0,1 @ F,0,0,1,0,5,0,1 @ F,0,0,1,0,5,0,1"
-     radius="5"
-     unit="px"
-     method="auto"
-     mode="F"
-     chamfer_steps="1"
-     flexible="false"
-     use_knot_distance="true"
-     apply_no_radius="true"
-     apply_with_radius="true"
-     only_selected="false"
-     hide_knots="false" /></defs><sodipodi:namedview
-   id="namedview15"
-   pagecolor="#ffffff"
-   bordercolor="#000000"
-   borderopacity="0.25"
-   inkscape:showpageshadow="2"
-   inkscape:pageopacity="0.0"
-   inkscape:pagecheckerboard="0"
-   inkscape:deskcolor="#d1d1d1"
-   inkscape:zoom="2.1048163"
-   inkscape:cx="193.36604"
-   inkscape:cy="192.65339"
-   inkscape:window-width="1872"
-   inkscape:window-height="1009"
-   inkscape:window-x="1912"
-   inkscape:window-y="-7"
-   inkscape:window-maximized="1"
-   inkscape:current-layer="Layer_1" />
-<polygon
-   points="0,96.879 193.129,289.379 386.257,96.879 "
-   id="polygon1"
-   inkscape:path-effect="#path-effect15"
-   d="M 3.541296,100.40876 189.5877,285.84924 a 5.0163247,5.0163247 179.99993 0 0 7.08259,-1e-5 L 382.71571,100.40877 A 2.0662996,2.0662996 67.546653 0 0 381.257,96.879 H 5 a 2.066292,2.066292 112.45327 0 0 -1.458704,3.52976 z"
-   style="fill:#ffffff" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     inkscape:zoom="0.508125"
+     inkscape:cx="800"
+     inkscape:cy="800"
+     inkscape:window-width="1872"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-7"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     d="m 1149.8751,354.10811 c 0,22.90248 -8.5382,45.38853 -25.1956,63.0852 L 669.5522,909.80966 C 651.85404,928.96475 626.86979,939.79127 600.84482,940 574.81857,940 549.83436,929.17342 532.13751,910.01858 L 75.343187,417.40213 c -25.8172,-27.69176 -32.271,-66.41657 -17.2803,-101.18722 C 73.262087,281.44558 106.15748,260 143.84298,260 h 912.14512 c 37.8923,0 70.7904,21.44439 85.7797,56.21491 5.6214,12.28362 8.1199,25.19324 8.1199,37.8932 z"
+     id="path1"
+     style="stroke-width:1.11038;fill:#ffffff" />
 </svg>

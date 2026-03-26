@@ -11,6 +11,7 @@ namespace Views.Info
 
         private previewImageElement: HTMLImageElement;
         private fileElement: HTMLHeadingElement;
+        private fileTagsElement: HTMLTagList;
 
         private build()
         {
@@ -20,13 +21,14 @@ namespace Views.Info
                 <div class="preview">
                     { this.previewImageElement = <img class="preview-image" /> as HTMLImageElement }
                 </div>,
+                this.fileTagsElement = <tag-list class="file-tags" /> as HTMLTagList,
                 <div />,
                 <div class="actions">
                     <button onclick={ () => { Collection.downloadFiles([this.file]); } }>Download</button>
                     { Collection.openInInkscape ? <button onclick={ () => { Collection.openInInkscape([this.file]); } }>Open Files in InkScape</button> : null }
                     { Collection.copySVGsToClipboard ? <button onclick={ () => { Collection.copySVGsToClipboard([this.file]); } }>Copy Images to Clipboard</button> : null }
                     { Collection.copyFilesToClipboard ? <button onclick={ () => { Collection.copyFilesToClipboard([this.file]); } }>Copy Files to Clipboard</button> : null }
-                </div>
+                </div>,
             ];
         }
 
@@ -37,7 +39,13 @@ namespace Views.Info
             this.file = file;
 
             this.fileElement.textContent = this.file?.name ?? "";
+            this.fileElement.title = this.file?.name ?? "";
             this.previewImageElement.src = this.file?.url ?? "";
+
+
+            this.fileTagsElement.tags = this.file?.tags ?? [];
+            const tagschangedEvent = new CustomEvent("tagschanged", { bubbles: true, detail: { tags: this.fileTagsElement.tags } });
+            this.dispatchEvent(tagschangedEvent);
         }
     }
 

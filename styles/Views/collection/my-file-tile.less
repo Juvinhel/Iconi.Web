@@ -4,7 +4,7 @@ my-file-tile
     width: 6em;
     padding: 0.5em;
     border-radius: 0.25em;
-    background: repeating-conic-gradient(#e0e0e0 0 25%, #FFFFFF 0 50%) 50% / 20px 20px;
+    background: var(--background-masonry);
     cursor: pointer;
 
     > img
@@ -26,7 +26,7 @@ my-file-tile
 
     &:hover
     {
-        background: repeating-conic-gradient(#009ece 0 25%, #82c9df 0 50%) 50% / 20px 20px;
+        background: var(--highlight-background-masonry);
 
         > .check
         {

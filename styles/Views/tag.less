@@ -1,11 +1,16 @@
-#tag-list-root
+#tag-list-root span
 {
-    span.checked
+    &
+    {
+        background-color: var(--background-color) !important;
+    }
+
+    &.checked
     {
         background-color: var(--accent-color) !important;
     }
 
-    span.negate
+    &.negate
     {
         background-color: var(--cancel-color) !important;
     }
