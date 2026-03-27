@@ -13,8 +13,7 @@ class App
         window.addEventListener("keyup", (event: KeyboardEvent) => this.pressCTRL(event.ctrlKey), { capture: true, passive: true });
         window.addEventListener("keydown", this.keyDown.bind(this), { capture: true, passive: true });
 
-        const main = Views.Main();
-        document.querySelector("main").append(main);
+        document.querySelector("main").append(new Views.MainElement());
     }
 
     public static config: Data.Config;

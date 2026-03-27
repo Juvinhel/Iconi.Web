@@ -90,6 +90,11 @@ namespace Views.Collection
             if (event.ctrlKey && event.key == "c")
                 event.preventDefault();
         }
+
+        public toggleTag(tag: string)
+        {
+            this.searchElement.toggleTag(tag);
+        }
     }
 
     customElements.define("my-collection", CollectionElement);

@@ -42,10 +42,21 @@ namespace Views.Info
             this.fileElement.title = this.file?.name ?? "";
             this.previewImageElement.src = this.file?.url ?? "";
 
-
             this.fileTagsElement.tags = this.file?.tags ?? [];
             const tagschangedEvent = new CustomEvent("tagschanged", { bubbles: true, detail: { tags: this.fileTagsElement.tags } });
             this.dispatchEvent(tagschangedEvent);
+        }
+
+        public highlightTags(tags: string[])
+        {
+            for (const tagElement of this.fileTagsElement.shadowRoot.querySelectorAll("span") as NodeListOf<HTMLSpanElement>)
+            {
+                const tag = tagElement.title;
+                const state = tags.includes(tag) ? "checked" : tags.includes("!" + tag) ? "negate" : null;
+                tagElement.classList.remove("checked", "negate");
+                if (state == "checked") tagElement.classList.toggle("checked", true);
+                if (state == "negate") tagElement.classList.toggle("negate", true);
+            }
         }
     }
 

@@ -3,6 +3,12 @@
     "liveServer.settings.port": 5424,
     "liveServer.settings.host": "localhost",
     "liveServer.settings.CustomBrowser": "chrome",
+    "liveServer.settings.mount": [
+        [
+            "/library",
+            "D:\\OneDrive\\Assets\\Icons"
+        ],
+    ],
     "quicktask.enableNpm": false,
     "VsCodeTaskButtons.tasks": [
         {
