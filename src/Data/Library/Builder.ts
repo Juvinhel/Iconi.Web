@@ -170,7 +170,7 @@ namespace Data.Library
 
             let [path, fileName] = filePath.splitLast("/");
             const [name, extension] = fileName.splitLast(".");
-            if (extension.toLowerCase() != "svg") return;
+            if (extension?.toLowerCase() != "svg") return;
             const file: File = { parent: null, name, extension, url, tags: this.parseTags(path + "/" + name + "-" + extension), };
 
             const folder: Folder = this.getOrCreateFolder(this.library, this.removePathExclusions(path), 1);

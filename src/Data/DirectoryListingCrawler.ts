@@ -1,5 +1,6 @@
 namespace Data
 {
+
     export function crawlDirectoryListing(root: string): AsyncIterable<string>
     {
         const urls: LinkedStack<string> = new LinkedStack<string>();
@@ -41,11 +42,11 @@ namespace Data
                 const links = html.querySelectorAll("a");
                 for (const link of links)
                 {
-                    const href = new URL(link.getAttribute("href"), url).toString(); // make rooted based on url
+                    const href = new URL(link.getAttribute("href"), url).toString().trimRight("/"); // make rooted based on url
                     if (!href.startsWith(root)) continue;
                     if (done.includes(href)) continue;
 
-                    if (link.href.endsWith("/")) // check untrimmed url
+                    if (link.getAttribute("href").endsWith("/")) // check untrimmed url
                     {   // IIS
                         folders.push(href);
                         continue;
