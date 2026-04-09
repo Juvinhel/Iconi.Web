@@ -134,8 +134,11 @@ namespace Data.Library
         private async getFileList(): Promise<string[]>
         {
             let list: string[] = [];
-            for await (const file of crawlDirectoryListing(this.url))
+            const directoryListing = new DirectoryListing(this.url);
+            for await (const file of directoryListing.scan())
             {
+                if (file.endsWith("/")) continue; // is folder
+
                 list.push(file);
                 this.progressDialog.max = list.length;
             }
