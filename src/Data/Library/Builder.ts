@@ -178,6 +178,7 @@ namespace Data.Library
 
             const folder: Folder = this.getOrCreateFolder(this.library, this.removePathExclusions(path), 1);
             folder.files.push(file);
+            file.parent = folder;
         }
 
         private removePathExclusions(path: string): string
