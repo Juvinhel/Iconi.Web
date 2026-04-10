@@ -134,8 +134,7 @@ namespace Data.Library
         private async getFileList(): Promise<string[]>
         {
             let list: string[] = [];
-            const directoryListing = new DirectoryListing(this.url);
-            for await (const file of directoryListing.scan())
+            for await (const file of DirectoryListing.deepScan(this.url))
             {
                 if (file.endsWith("/")) continue; // is folder
 
